@@ -84,7 +84,7 @@ sudo umount ./tmp/mnt
 # install remove pre-install files
 if [ -e $LIST_FILE ]; then
 	for FILE_ in `egrep -v '(^#|^$)' $LIST_FILE`; do
-	   sudo rm -f $FACTORYFS_DIR/app/$FILE_
+	   sudo rm -f $FACTORYFS_DIR/$FILE_
 	   echo removed $FACTORYFS_DIR/app/$FILE_
 	done
 fi

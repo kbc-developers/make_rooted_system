@@ -14,9 +14,36 @@
 
 #!/bin/sh
 
-echo "===== ROOTED FACTROYFS make start ====="
-
+# config
 FACTORYFS_DIR=tmp/factoryfs
+LIST_FILE=./list.SC02E
+# -------------------------------------------------------
+func_install_su()
+{
+	echo ">>>>> su package insall..."
+	sudo cp -av sed/SGS3RootingApp.apk $FACTORYFS_DIR/app/SGS3RootingApp.apk
+	sudo cp -av sed/busybox_mount $FACTORYFS_DIR/bin/busybox_mount
+	sudo chown 0.2000 $FACTORYFS_DIR/bin/busybox_mount
+	sudo chmod 755 $FACTORYFS_DIR/bin/busybox_mount
+	sudo cp -av sed/setuid_wrapper $FACTORYFS_DIR/bin/setuid_wrapper
+	sudo chown 0.0 $FACTORYFS_DIR/bin/setuid_wrapper
+	sudo chmod 6755 $FACTORYFS_DIR/bin/setuid_wrapper
+	sudo rm $FACTORYFS_DIR/bin/toolbox
+	sudo cp -av sed/toolbox $FACTORYFS_DIR/bin/toolbox
+	sudo chown 0.2000 $FACTORYFS_DIR/bin/toolbox
+	sudo chmod 755 $FACTORYFS_DIR/bin/toolbox
+	sudo cp -av sed/install-recovery.sh $FACTORYFS_DIR/etc/install-recovery.sh
+	sudo cp -av sed/install-recovery.sh $FACTORYFS_DIR/etc/rooting.sh
+	sudo chown 0.0 $FACTORYFS_DIR/etc/install-recovery.sh
+	sudo chmod 755 $FACTORYFS_DIR/etc/install-recovery.sh
+	sudo chown 0.0 $FACTORYFS_DIR/etc/rooting.sh
+	sudo chmod 755 $FACTORYFS_DIR/etc/rooting.sh
+	sudo cp -av sed/busybox_file $FACTORYFS_DIR/etc/busybox_file
+	sudo cp -av sed/su_file $FACTORYFS_DIR/etc/su_file
+}
+
+# --------------------------------------------------------
+echo "===== ROOTED FACTROYFS make start ====="
 
 # initialize
 if [ -d ./out ]; then
@@ -54,27 +81,18 @@ sudo mount -o loop,ro,noexec,noload ./tmp/output.img ./tmp/mnt
 sudo rsync -av tmp/mnt/ $FACTORYFS_DIR
 sudo umount ./tmp/mnt
 
+# install remove pre-install files
+if [ -e $LIST_FILE ]; then
+	for FILE_ in `egrep -v '(^#|^$)' $LIST_FILE`; do
+	   sudo rm -f $FACTORYFS_DIR/app/$FILE_
+	   echo removed $FACTORYFS_DIR/app/$FILE_
+	done
+fi
+
 # install su
-echo ">>>>> su package insall..."
-sudo cp -av sed/SGS3RootingApp.apk $FACTORYFS_DIR/app/SGS3RootingApp.apk
-sudo cp -av sed/busybox_mount $FACTORYFS_DIR/bin/busybox_mount
-sudo chown 0.2000 $FACTORYFS_DIR/bin/busybox_mount
-sudo chmod 755 $FACTORYFS_DIR/bin/busybox_mount
-sudo cp -av sed/setuid_wrapper $FACTORYFS_DIR/bin/setuid_wrapper
-sudo chown 0.0 $FACTORYFS_DIR/bin/setuid_wrapper
-sudo chmod 6755 $FACTORYFS_DIR/bin/setuid_wrapper
-sudo rm $FACTORYFS_DIR/bin/toolbox
-sudo cp -av sed/toolbox $FACTORYFS_DIR/bin/toolbox
-sudo chown 0.2000 $FACTORYFS_DIR/bin/toolbox
-sudo chmod 755 $FACTORYFS_DIR/bin/toolbox
-sudo cp -av sed/install-recovery.sh $FACTORYFS_DIR/etc/install-recovery.sh
-sudo cp -av sed/install-recovery.sh $FACTORYFS_DIR/etc/rooting.sh
-sudo chown 0.0 $FACTORYFS_DIR/etc/install-recovery.sh
-sudo chmod 755 $FACTORYFS_DIR/etc/install-recovery.sh
-sudo chown 0.0 $FACTORYFS_DIR/etc/rooting.sh
-sudo chmod 755 $FACTORYFS_DIR/etc/rooting.sh
-sudo cp -av sed/busybox_file $FACTORYFS_DIR/etc/busybox_file
-sudo cp -av sed/su_file $FACTORYFS_DIR/etc/su_file
+# now can't boot this yet
+#func_install_su
+
 
 # repack
 echo ">>>>> repack factroyfs.img..."
@@ -90,10 +108,13 @@ cd ../../
 # make package
 echo ">>>>> make odin package..."
 cd out
-tar cvf SC02E-ROOTED-system.tar system.img
+cp ../cache.img ./cache.img
+
+tar cvf SC02E-ROOTED-system.tar system.img cache.img
 md5sum -t SC02E-ROOTED-system.tar >> SC02E-ROOTED-system.tar
 mv SC02E-ROOTED-system.tar SC02E-ROOTED-system.tar.md5
 sudo rm system.img
+sudo rm cache.img
 cd ../
 
 # cleanup

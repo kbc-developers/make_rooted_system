@@ -51,7 +51,7 @@ else
   BUILD_SELECT=$1
 fi
 
-if [ "$BUILD_SELECT" = 'roroted' -o "$BUILD_SELECT" = 'r' ]; then
+if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
 	IMAGE_FILE=SC02E-ROOTED
 else
 	IMAGE_FILE=SC02E-CUSTOM
@@ -106,7 +106,7 @@ fi
 
 
 # install su
-if [ "$BUILD_SELECT" = 'oroted' -o "$BUILD_SELECT" = 'r' ]; then
+if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
 	func_install_su
 fi
 

@@ -20,14 +20,19 @@
 #include "sparse_crc32.h"
 #include "wipe.h"
 
+#include <fcntl.h>
+#include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/mman.h>
 #include <unistd.h>
-#include <fcntl.h>
-
 #include <zlib.h>
+
+#ifndef USE_MINGW
+#include <sys/mman.h>
+#define O_BINARY 0
+#endif
+
 
 #if defined(__APPLE__) && defined(__MACH__)
 #define lseek64 lseek
@@ -48,6 +53,7 @@ struct output_file_ops {
 struct output_file {
 	int fd;
 	gzFile gz_fd;
+	bool close_fd;
 	int sparse;
 	u64 cur_out_ptr;
 	u32 chunk_cnt;
@@ -85,7 +91,9 @@ static int file_write(struct output_file *out, u8 *data, int len)
 
 static void file_close(struct output_file *out)
 {
-	close(out->fd);
+	if (out->close_fd) {
+		close(out->fd);
+	}
 }
 
 
@@ -343,7 +351,7 @@ void close_output_file(struct output_file *out)
 	out->ops->close(out);
 }
 
-struct output_file *open_output_file(const char *filename, int gz, int sparse,
+struct output_file *open_output_fd(int fd, int gz, int sparse,
         int chunks, int crc, int wipe)
 {
 	int ret;
@@ -355,31 +363,24 @@ struct output_file *open_output_file(const char *filename, int gz, int sparse,
 	zero_buf = malloc(info.block_size);
 	if (!zero_buf) {
 		error_errno("malloc zero_buf");
+		free(out);
 		return NULL;
 	}
 	memset(zero_buf, '\0', info.block_size);
 
 	if (gz) {
 		out->ops = &gz_file_ops;
-		out->gz_fd = gzopen(filename, "wb9");
+		out->gz_fd = gzdopen(fd, "wb9");
 		if (!out->gz_fd) {
 			error_errno("gzopen");
 			free(out);
 			return NULL;
 		}
 	} else {
-		if (strcmp(filename, "-")) {
-			out->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (out->fd < 0) {
-				error_errno("open");
-				free(out);
-				return NULL;
-			}
-		} else {
-			out->fd = STDOUT_FILENO;
-		}
+		out->fd = fd;
 		out->ops = &file_ops;
 	}
+	out->close_fd = false;
 	out->sparse = sparse;
 	out->cur_out_ptr = 0ll;
 	out->chunk_cnt = 0;
@@ -404,6 +405,33 @@ struct output_file *open_output_file(const char *filename, int gz, int sparse,
 	}
 
 	return out;
+}
+
+struct output_file *open_output_file(const char *filename, int gz, int sparse,
+        int chunks, int crc, int wipe) {
+
+	int fd;
+	struct output_file *file;
+
+	if (strcmp(filename, "-")) {
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0644);
+		if (fd < 0) {
+			error_errno("open");
+			return NULL;
+		}
+	} else {
+		fd = STDOUT_FILENO;
+	}
+
+	file = open_output_fd(fd, gz, sparse, chunks, crc, wipe);
+	if (!file) {
+		close(fd);
+		return NULL;
+	}
+
+	file->close_fd = true; // we opened descriptor thus we responsible for closing it
+
+	return file;
 }
 
 void pad_output_file(struct output_file *out, u64 len)
@@ -446,7 +474,7 @@ void pad_output_file(struct output_file *out, u64 len)
 void write_data_block(struct output_file *out, u64 off, u8 *data, int len)
 {
 	int ret;
-	
+
 	if (off + len > (u64) info.len) {
 		error("attempted to write block %llu past end of filesystem",
 				off + len - info.len);
@@ -511,6 +539,7 @@ void write_data_file(struct output_file *out, u64 off, const char *file,
 	int ret;
 	off64_t aligned_offset;
 	int aligned_diff;
+	int buffer_size;
 
 	if (off + len >= (u64) info.len) {
 		error("attempted to write block %llu past end of filesystem",
@@ -518,7 +547,7 @@ void write_data_file(struct output_file *out, u64 off, const char *file,
 		return;
 	}
 
-	int file_fd = open(file, O_RDONLY);
+	int file_fd = open(file, O_RDONLY | O_BINARY);
 	if (file_fd < 0) {
 		error_errno("open");
 		return;
@@ -526,14 +555,25 @@ void write_data_file(struct output_file *out, u64 off, const char *file,
 
 	aligned_offset = offset & ~(4096 - 1);
 	aligned_diff = offset - aligned_offset;
+	buffer_size = len + aligned_diff;
 
-	u8 *data = mmap64(NULL, len + aligned_diff, PROT_READ, MAP_SHARED, file_fd,
+#ifndef USE_MINGW
+	u8 *data = mmap64(NULL, buffer_size, PROT_READ, MAP_SHARED, file_fd,
 			aligned_offset);
 	if (data == MAP_FAILED) {
 		error_errno("mmap64");
 		close(file_fd);
 		return;
 	}
+#else
+	u8 *data = malloc(buffer_size);
+	if (!data) {
+		error_errno("malloc");
+		close(file_fd);
+		return;
+	}
+	memset(data, 0, buffer_size);
+#endif
 
 	if (out->sparse) {
 		write_chunk_raw(out, off, data + aligned_diff, len);
@@ -547,11 +587,12 @@ void write_data_file(struct output_file *out, u64 off, const char *file,
 			goto err;
 	}
 
-	munmap(data, len);
-
-	close(file_fd);
-
 err:
-	munmap(data, len);
+#ifndef USE_MINGW
+	munmap(data, buffer_size);
+#else
+	write(file_fd, data, buffer_size);
+	free(data);
+#endif
 	close(file_fd);
 }

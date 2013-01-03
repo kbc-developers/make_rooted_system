@@ -23,11 +23,16 @@
 #include "extent.h"
 
 #include <fcntl.h>
-#include <arpa/inet.h>
-#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+
+#ifdef USE_MINGW
+#include <winsock2.h>
+#else
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
+#endif
 
 #if defined(__linux__)
 #include <linux/fs.h>
@@ -137,11 +142,11 @@ static void ext4_write_data_file(void *priv, u64 off, const char *file,
 }
 
 /* Write the filesystem image to a file */
-void write_ext4_image(const char *filename, int gz, int sparse, int crc,
-		int wipe)
+void write_ext4_image(int fd, int gz, int sparse, int crc, int wipe)
 {
 	int ret = 0;
-	struct output_file *out = open_output_file(filename, gz, sparse,
+
+	struct output_file *out = open_output_fd(fd, gz, sparse,
 	        count_sparse_chunks(), crc, wipe);
 
 	if (!out)
@@ -446,24 +451,19 @@ void ext4_update_free()
 	}
 }
 
-static u64 get_block_device_size(const char *filename)
+static u64 get_block_device_size(int fd)
 {
-	int fd = open(filename, O_RDONLY);
 	u64 size = 0;
 	int ret;
-
-	if (fd < 0)
-		return 0;
 
 #if defined(__linux__)
 	ret = ioctl(fd, BLKGETSIZE64, &size);
 #elif defined(__APPLE__) && defined(__MACH__)
 	ret = ioctl(fd, DKIOCGETBLOCKCOUNT, &size);
 #else
+	close(fd);
 	return 0;
 #endif
-
-	close(fd);
 
 	if (ret)
 		return 0;
@@ -471,14 +471,14 @@ static u64 get_block_device_size(const char *filename)
 	return size;
 }
 
-u64 get_file_size(const char *filename)
+u64 get_file_size(int fd)
 {
 	struct stat buf;
 	int ret;
 	u64 reserve_len = 0;
 	s64 computed_size;
 
-	ret = stat(filename, &buf);
+	ret = fstat(fd, &buf);
 	if (ret)
 		return 0;
 
@@ -488,7 +488,7 @@ u64 get_file_size(const char *filename)
 	if (S_ISREG(buf.st_mode))
 		computed_size = buf.st_size - reserve_len;
 	else if (S_ISBLK(buf.st_mode))
-		computed_size = get_block_device_size(filename) - reserve_len;
+		computed_size = get_block_device_size(fd) - reserve_len;
 	else
 		computed_size = 0;
 
@@ -513,4 +513,3 @@ u64 parse_num(const char *arg)
 
 	return num;
 }
-

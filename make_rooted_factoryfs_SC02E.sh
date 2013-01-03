@@ -43,7 +43,22 @@ func_install_su()
 }
 
 # --------------------------------------------------------
-echo "===== ROOTED FACTROYFS make start ====="
+
+if [ ! -n "$1" ]; then
+  echo ""
+  read -p "select build? [(r)ooted/(d)el_preinstall_only default:rooted] " BUILD_SELECT
+else
+  BUILD_SELECT=$1
+fi
+
+if [ "$BUILD_SELECT" = 'roroted' -o "$BUILD_SELECT" = 'r' ]; then
+	IMAGE_FILE=SC02E-ROOTED
+else
+	IMAGE_FILE=SC02E-CUSTOM
+fi
+
+echo "===== $IMAGE_FILE FACTROYFS make start ====="
+
 
 # initialize
 if [ -d ./out ]; then
@@ -89,10 +104,11 @@ if [ -e $LIST_FILE ]; then
 	done
 fi
 
-# install su
-# now can't boot this yet
-#func_install_su
 
+# install su
+if [ "$BUILD_SELECT" = 'oroted' -o "$BUILD_SELECT" = 'r' ]; then
+	func_install_su
+fi
 
 # repack
 echo ">>>>> repack factroyfs.img..."
@@ -110,9 +126,9 @@ echo ">>>>> make odin package..."
 cd out
 cp ../cache.img ./cache.img
 
-tar cvf SC02E-ROOTED-system.tar system.img cache.img
-md5sum -t SC02E-ROOTED-system.tar >> SC02E-ROOTED-system.tar
-mv SC02E-ROOTED-system.tar SC02E-ROOTED-system.tar.md5
+tar cvf $IMAGE_FILE-system.tar system.img cache.img
+md5sum -t $IMAGE_FILE-system.tar >> $IMAGE_FILE-system.tar
+mv $IMAGE_FILE-system.tar $IMAGE_FILE-system.tar.md5
 sudo rm system.img
 sudo rm cache.img
 cd ../
@@ -121,4 +137,4 @@ cd ../
 echo ">>>>> cleanup..."
 sudo rm -rf ./tmp
 
-echo "===== ROOTED FACTROYFS make end ====="
+echo "===== $IMAGE_FILE FACTROYFS make end ====="

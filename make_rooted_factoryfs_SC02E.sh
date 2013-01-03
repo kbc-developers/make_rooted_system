@@ -46,7 +46,7 @@ func_install_su()
 
 if [ ! -n "$1" ]; then
   echo ""
-  read -p "select build? [(r)ooted/(d)el_preinstall_only default:rooted] " BUILD_SELECT
+  read -p "select build? [(r)ooted/(d)el_preinstall_only default:del_preinstall_only] " BUILD_SELECT
 else
   BUILD_SELECT=$1
 fi

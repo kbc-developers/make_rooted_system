@@ -85,7 +85,7 @@ sudo umount ./tmp/mnt
 if [ -e $LIST_FILE ]; then
 	for FILE_ in `egrep -v '(^#|^$)' $LIST_FILE`; do
 	   sudo rm -f $FACTORYFS_DIR/$FILE_
-	   echo removed $FACTORYFS_DIR/app/$FILE_
+	   echo removed $FACTORYFS_DIR/$FILE_
 	done
 fi
 

@@ -162,49 +162,8 @@ func_cleanup()
 	sudo rm -rf ./tmp
 }
 # -------------------------------------------------------
-func_install_su_type1()
-{
-	_FACTORYFS_DIR=$1
-	echo ">>>>> su package insall..."
-	sudo cp -av sed/su $_FACTORYFS_DIR/xbin/su
-	sudo cp -av sed/Superuser.apk $_FACTORYFS_DIR/app/Superuser.apk
-	sudo chown 0.0 $_FACTORYFS_DIR/xbin/su
-	sudo chmod 6755 $_FACTORYFS_DIR/xbin/su
-	sudo chown 0.0 $_FACTORYFS_DIR/app/Superuser.apk
-	sudo chmod 644 $_FACTORYFS_DIR/app/Superuser.apk
-}
-
-# -------------------------------------------------------
-func_install_su_type2()
-{
-	_FACTORYFS_DIR=$1
-	echo ">>>>> su package insall..."
-	sudo cp -av sed/SGS3RootingApp.apk $_FACTORYFS_DIR/app/SGS3RootingApp.apk
-	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
-	
-	sudo cp -av sed/busybox_mount $_FACTORYFS_DIR/bin/busybox_mount
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/busybox_mount
-	sudo chmod 755 $_FACTORYFS_DIR/bin/busybox_mount
-
-	sudo cp -av sed/setuid_wrapper $_FACTORYFS_DIR/bin/setuid_wrapper
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/setuid_wrapper
-	sudo chmod 6755 $_FACTORYFS_DIR/bin/setuid_wrapper
-
-	sudo rm $_FACTORYFS_DIR/bin/toolbox
-	sudo cp -av sed/toolbox $_FACTORYFS_DIR/bin/toolbox
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/toolbox
-
-	sudo chmod 755 $_FACTORYFS_DIR/bin/toolbox
-	sudo cp -av sed/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo cp -av sed/install-recovery.sh $_FACTORYFS_DIR/etc/rooting.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo chmod 755 $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/rooting.sh
-	sudo chmod 755 $_FACTORYFS_DIR/etc/rooting.sh
-
-	sudo cp -av sed/busybox_file $_FACTORYFS_DIR/etc/busybox_file
-	sudo cp -av sed/su_file $_FACTORYFS_DIR/etc/su_file
-}
+#inport install su functions
+. ./install_su
 
 #============================================================================
 _MODEL_SEL=$1

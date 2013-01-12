@@ -205,4 +205,4 @@ func_make_odin_package $FACTORYFS_IMG $IMAGE_FILE $OPT_FILES
 # cleanup
 func_cleanup
 
-echo "===== $IMAGE_FILE ROOTED FACTROYFS make end ====="
+echo "===== $IMAGE_FILE FACTROYFS make end ====="

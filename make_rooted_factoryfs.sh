@@ -194,6 +194,9 @@ if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
 	$SU_INSTALL_FUNC $FACTORYFS_DIR
 fi
 
+# call user custom
+sh ./user_custom.sh $FACTORYFS_DIR
+
 # repack
 func_repack_factoryfs_files $FACTORYFS_DIR $FACTORYFS_IMG $FACTORYFS_IMG_SIZE
 # make package

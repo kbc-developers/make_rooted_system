@@ -150,7 +150,7 @@ func_make_odin_package()
 	md5sum -t $_IMAGE_FILE-system.tar >> $_IMAGE_FILE-system.tar
 	mv $_IMAGE_FILE-system.tar $_IMAGE_FILE-system.tar.md5
 	sudo rm $_FACTORYFS_IMG
-	if [ ! -z $_OPT_FILES]; then
+	if [ ! -z $_OPT_FILES ]; then
 		sudo rm $_OPT_FILES
 	fi
 	cd ../

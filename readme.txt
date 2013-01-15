@@ -22,7 +22,12 @@
        ├ bin/
        ├ config/
        ├ sed/
-       ├ readme.txt
+       ├ user/  (option)
+       │  └XXXX (SC02Eなど機種名)
+       │    └YYYY(適当な名前)
+       │        ├install.sh
+       │        └xxxx.so 
+       │ readme.txt
        ├ install_su
        ├ make_rooted_factoryfs.sh
        ├ user_custom.sh
@@ -51,8 +56,14 @@
 　　追加でapkやlibを入れたい。カスタムした設定を入れるなど
 　　user_custom.shに処理を追記する事で対応できます。
 
+	user/XXXX/以下のYYYY/install.shがあると、自動実行します
+		例)user/SC02E/test/install.sh
+
+
   6. 更新履歴
    Mod by ma43s
+  r5 機種別に複数のユーザ処理をできるようにした
+   
   r4 スクリプトを整理し、機種選択するように変更
 　　　user_custom処理を追加できるようにした
 

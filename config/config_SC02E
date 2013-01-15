@@ -15,7 +15,7 @@
 # config
 FACTORYFS_IMG=system.img
 FACTORYFS_IMG_SIZE=2147483648
-OPT_FILES=./cache.img
+OPT_FILES=cache.img
 
 SU_INSTALL_FUNC=func_install_su_type2
 

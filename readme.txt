@@ -1,6 +1,6 @@
 
   *** 純正ROM su入り factoryfs.img(system.img.ext4)生成スクリプト rev2 ***
-  ほむらModded
+  ほむらModded  and ma34s modded
 
   1. これはなに？
 
@@ -9,22 +9,27 @@
 
   2. 必要なものは？
     
-    ・linux環境 (Ubuntu11.04 64bitで動作確認しています)
-    ・純正ROMのfactoryfs.img (バージョン問わず)
+    ・linux環境 (Ubuntu12.04 32bit/64bitで動作確認しています)
+    ・純正ROM(バージョン問わず)のfactoryfs.img、SE02Eはcache.imgも必要です 
      (SoCがmsmの端末はsystem.img.ext4)
-
+    
   3. どうやって使うの？
 
     readme.txtがあるディレクトリに純正ROMのfactoryfs.img(system.img.ext4)に置いてください。
     以下のように配置すればOK
 
       (dir)
-       ├ bin
+       ├ bin/
+       ├ config/
+       ├ sed/
        ├ readme.txt
+       ├ install_su
        ├ make_rooted_factoryfs.sh
-       └ factoryfs.img(system.img.ext4) ※追加するもの
+       ├ user_custom.sh
+       ├ (cache.img)  ※追加するもの
+       └ factoryfs.img(system.img.ext4 or system.img) ※追加するもの
 
-    配置が終わったら"端末"から"make_rooted_factoryfs.sh"を実行してください。
+    配置が終わったら"端末(Terminal)"から"make_rooted_factoryfs.sh"を実行してください。
 
     ※.shの実行権が外れていることがあります。
       make_rooted_factoryfs.sh と bin/ext4_utils/mkuserimg.sh に実行権を追加してください。
@@ -37,8 +42,25 @@
     エラーが無ければoutにOdin3で焼ける形式の"SC0XXOMXXX-ROOTED-FACTORYFS(system).tar.md5"が
     作成されているはずです。
 
+  4. プリインストールアプリの削除について
+　　削除するプリインストールアプリの指定
+    config/list.XXXXを開き、削除したいアプリを１行に一つ記述します。
+　　　例）app/XXXXXX.apk
 
-  4. 更新履歴
+  5. ユーザカスタム処理について
+　　追加でapkやlibを入れたい。カスタムした設定を入れるなど
+　　user_custom.shに処理を追記する事で対応できます。
+
+  6. 更新履歴
+   Mod by ma43s
+  r4 スクリプトを整理し、機種選択するように変更
+　　　user_custom処理を追加できるようにした
+
+  r2 SE02Eでrooted処理を選択できるようにした
+ 
+  r1 任意のプリインストール削除できる機能を追加
+　    SE02Eでrooted処理を一旦外した
+
    Mod by ほむら
 　　　 GT-N7000 SC03D SC05D SC06D に対応
 

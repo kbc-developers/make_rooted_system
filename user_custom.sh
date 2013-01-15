@@ -13,17 +13,10 @@
 #   limitations under the License.
 #!/bin/bash
 # -------------------------------------------------------
-_FACTORYFS=$1
+FACTORYFS=$1
+MODEL=$2
 
 echo ">>>>> user custom process..."
-# if you want someting 
-# you can write process here.
-# this script called afeter delete_pre-install and su_install.
-#
-# $_FACTORYFS : /system dir
-#	exsample) $_FACTORYFS/app -> /system/app
-#
-
 
 
 

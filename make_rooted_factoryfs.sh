@@ -156,6 +156,21 @@ func_make_odin_package()
 	cd ../
 }
 # -------------------------------------------------------
+func_user_process()
+{
+	_FACTORYFS=$1
+	_MODEL=$2
+	for _DIR in `ls user/$_MODEL`; do
+
+		if [ -f user/$_MODEL/$_DIR/install.sh ]; then
+			sh user/$_MODEL/$_DIR/install.sh $_FACTORYFS
+		fi
+	done
+
+	# call user custom
+	sh ./user_custom.sh $_FACTORYFS $_MODEL
+}
+# -------------------------------------------------------
 func_cleanup()
 {
 	echo ">>>>> cleanup..."
@@ -195,7 +210,9 @@ if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
 fi
 
 # call user custom
-sh ./user_custom.sh $FACTORYFS_DIR
+func_user_process $FACTORYFS_DIR $MODEL
+
+
 
 # repack
 func_repack_factoryfs_files $FACTORYFS_DIR $FACTORYFS_IMG $FACTORYFS_IMG_SIZE

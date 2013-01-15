@@ -142,7 +142,7 @@ func_make_odin_package()
 	_OPT_FILES=$3
 	echo ">>>>> make odin package..."
 	cd out
-	if [ ! -z $_OPT_FILES]; then
+	if [ ! -z $_OPT_FILES ]; then
 		cp ../$_OPT_FILES ./
 	fi
 	

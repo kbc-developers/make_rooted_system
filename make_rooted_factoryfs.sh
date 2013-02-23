@@ -13,65 +13,72 @@
 #   limitations under the License.
 #!/bin/bash
 # -------------------------------------------------------
-FACTORYFS_DIR=tmp/factoryfs
-
-
 # -------------------------------------------------------
-func_init()
+func_init_dir()
 {
-	if [ -d ./out ]; then
-		sudo rm -rf ./out
+	if [ -z "$1" ]; then
+		echo "error: not found MODEL" && exit -1
 	fi
-	if [ -d ./tmp ]; then
-		sudo rm -rf ./tmp
+	_OUT_DIR=$1
+
+	if [ -d $_OUT_DIR ]; then
+		sudo rm -rf $_OUT_DIR
 	fi
+	make -p $_OUT_DIR
+	make -p $_OUT_DIR/tmp
 }
 
 
 # -------------------------------------------------------
 func_make_model_select()
 {
-	MODEL=""
+	_MODEL=""
+	_ITEM=""
+
 
 	_CONFIGS=`ls ./config | grep config_`
 
 	if [ ! -n "$1" ]; then
 		_IDX=1
 		for _CONF in $_CONFIGS; do
-
 			_SEL_ITEM=`echo $_CONF | cut -d'_' -f2`
-			echo "$_IDX) $_SEL_ITEM"
-		   
+			_NAME=`cat ./config/$_CONF | grep DEVICE_NAME | cut -d'=' -f2`
+			_ITEM="$_ITEM
+$_IDX) $_SEL_ITEM $_NAME"
 		   _IDX=`expr $_IDX + 1`
 		done
 
+		
+
 		_IDX=`expr $_IDX - 1`
-		read -p "chose model [1-$_IDX] : " _SEL_NUM
-		MODEL=`echo $_CONFIGS | cut -d' ' -f$_SEL_NUM | cut -d'_' -f2`
+		read -p "$_ITEM
+chose model [1-$_IDX] : " _SEL_NUM
+		_MODEL=`echo $_CONFIGS | cut -d' ' -f$_SEL_NUM | cut -d'_' -f2`
 	else
 		for _CONF in $_CONFIGS; do
 			_SEL_ITEM=`echo $_CONF | cut -d'_' -f2`
 			if [ "$1" = "$_SEL_ITEM" ]; then
-				MODEL=$1
+				_MODEL=$1
 				break
 			fi
 		done
 	fi
+	echo $_MODEL
 }
 # -------------------------------------------------------
 func_make_build_select()
 {
+	
 	if [ ! -n "$1" ]; then
-	  echo ""
-	  read -p "select build? [(r)ooted/(d)el_preinstall_only default:del_preinstall_only] " BUILD_SELECT
+	  read -p "select build? [(r)ooted/(d)el_preinstall_only default:del_preinstall_only] " _BUILD_SELECT
 	else
-	  BUILD_SELECT=$1
+	  _BUILD_SELECT=$1
 	fi
 
-	if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
-		IMAGE_FILE=$MODEL-ROOTED
+	if [ "$_BUILD_SELECT" = 'rooted' -o "$_BUILD_SELECT" = 'r' ]; then
+		echo ROOTED
 	else
-		IMAGE_FILE=$MODEL-CUSTOM
+		echo CUSTOM
 	fi
 }
 # -------------------------------------------------------
@@ -85,23 +92,24 @@ func_make_simg2img()
 # -------------------------------------------------------
 func_extract_factoryfs_files()
 {
-	_FACTORYFS_DIR=$1
-	_FACTORYFS_IMG=$2
+	_TMP_DIR=$1
+	_FACTORYFS_DIR=$2
+	_FACTORYFS_IMG=$3
 	
 	# extract factoryfs files
 	echo ">>>>> extract factroyfs files. wait a few minuts..."
-	if [ ! -d ./tmp/mnt ]; then
-		mkdir -p ./tmp/mnt
+	if [ ! -d $_TMP_DIR/mnt ]; then
+		mkdir -p $_TMP_DIR/mnt
 	fi
 	if [ -d $_FACTORYFS_DIR ]; then
 		sudo rm -rf $_FACTORYFS_DIR
 	fi
 	mkdir -p $_FACTORYFS_DIR
 
-	./bin/ext4_utils/simg2img $_FACTORYFS_IMG ./tmp/output.img
-	sudo mount -o loop,ro,noexec,noload ./tmp/output.img ./tmp/mnt
-	sudo rsync -av tmp/mnt/ $_FACTORYFS_DIR
-	sudo umount ./tmp/mnt
+	./bin/ext4_utils/simg2img $_FACTORYFS_IMG $_TMP_DIR/output.img
+	sudo mount -o loop,ro,noexec,noload $_TMP_DIR/output.img $_TMP_DIR/mnt
+	sudo rsync -av $_TMP_DIR/mnt $_FACTORYFS_DIR
+	sudo umount $_TMP_DIR/mnt
 }
 # -------------------------------------------------------
 func_delete_preinstall_files()
@@ -126,25 +134,19 @@ func_repack_factoryfs_files()
 	_FACTORYFS_IMG=$2
 	_FACTORYFS_IMG_SIZE=$3
 	echo ">>>>> repack factroyfs.img..."
-	if [ -d ./out ]; then
-		sudo rm -rf ./out
-	fi
-	mkdir -p ./out
 	cd ./bin/ext4_utils
-	sudo ./make_ext4fs -s -l $_FACTORYFS_IMG_SIZE -a system ../../out/$_FACTORYFS_IMG ../../$_FACTORYFS_DIR
-	cd ../../
+	sudo ./make_ext4fs -s -l $_FACTORYFS_IMG_SIZE -a system $_FACTORYFS_IMG $_FACTORYFS_DIR
+	cd $BASE_DIR
 }
 # -------------------------------------------------------
 func_make_odin_package()
 {
-	_FACTORYFS_IMG=$1
-	_IMAGE_FILE=$2
-	_OPT_FILES=$3
+	_OUT_DIR=$1
+	_FACTORYFS_IMG=$2
+	_IMAGE_FILE=$3
+	_OPT_FILES=$4
 	echo ">>>>> make odin package..."
-	cd out
-	if [ ! -z $_OPT_FILES ]; then
-		cp ../$_OPT_FILES ./
-	fi
+	cd $_OUT_DIR
 	
 	tar cvf $_IMAGE_FILE-system.tar $_FACTORYFS_IMG $_OPT_FILES
 	md5sum -t $_IMAGE_FILE-system.tar >> $_IMAGE_FILE-system.tar
@@ -153,7 +155,7 @@ func_make_odin_package()
 	if [ ! -z $_OPT_FILES ]; then
 		sudo rm $_OPT_FILES
 	fi
-	cd ../
+	cd $BASE_DIR
 }
 # -------------------------------------------------------
 func_user_process()
@@ -171,55 +173,67 @@ func_user_process()
 	sh ./user_custom.sh $_FACTORYFS $_MODEL
 }
 # -------------------------------------------------------
-func_cleanup()
-{
-	echo ">>>>> cleanup..."
-	sudo rm -rf ./tmp
-}
-# -------------------------------------------------------
 #inport install su functions
 . ./install_su
 
 #============================================================================
+BASE_DIR=`pwd`
+
 _MODEL_SEL=$1
 _BUILD_SEL=$2
 
-func_make_model_select $_MODEL_SEL
+MODEL=`func_make_model_select $_MODEL_SEL`
+#func_make_model_select $_MODEL_SEL
+
 if [ -z "$MODEL" ]; then
 	echo "error: not found MODEL" && exit -1
 fi
-#inport model config
+
+if [ -f ./img/$MODEL/$FACTORYFS_IMG ]; then
+	echo "error: not found image file" && exit -1
+fi
+
+OUT_DIR="$BASE_DIR/out/$MODEL"
+TMP_DIR="$OUT_DIR/tmp"
+FACTORYFS_DIR="$TMP_DIR/factoryfs"
+
+#import model config
 . ./config/config_$MODEL
 
-func_make_build_select $_BUILD_SEL
-echo "===== $IMAGE_FILE FACTROYFS make start ====="
+BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
+IMAGE_FILE=$MODEL-$BUILD_SELECT
 
+echo "===== $IMAGE_FILE FACTROYFS make start ====="
+# init out/work dir
+func_init_dir
 
 # make simg2img
 func_make_simg2img
 
 # extract factoryfs files
-func_extract_factoryfs_files $FACTORYFS_DIR $FACTORYFS_IMG
+func_extract_factoryfs_files $TMP_DIR $FACTORYFS_DIR ./img/$MODEL/$FACTORYFS_IMG
 
 # install delete pre-install files
 func_delete_preinstall_files $FACTORYFS_DIR $MODEL
 
 # install su
-if [ "$BUILD_SELECT" = 'rooted' -o "$BUILD_SELECT" = 'r' ]; then
+if [ "$BUILD_SELECT" = 'ROOTED' ]; then
 	$SU_INSTALL_FUNC $FACTORYFS_DIR
 fi
 
 # call user custom
 func_user_process $FACTORYFS_DIR $MODEL
 
-
-
 # repack
-func_repack_factoryfs_files $FACTORYFS_DIR $FACTORYFS_IMG $FACTORYFS_IMG_SIZE
+func_repack_factoryfs_files $FACTORYFS_DIR $OUT_DIR/$FACTORYFS_IMG $FACTORYFS_IMG_SIZE
 # make package
-func_make_odin_package $FACTORYFS_IMG $IMAGE_FILE $OPT_FILES
+if [ ! -z ./img/$MODEL/$OPT_FILES ]; then
+	cp ./img/$MODEL/$OPT_FILES $OUT_DIR
+fi
+func_make_odin_package $OUT_DIR $FACTORYFS_IMG $IMAGE_FILE $OPT_FILES
 
 # cleanup
-func_cleanup
+echo ">>>>> cleanup..."
+sudo rm -rf $TMP_DIR
 
 echo "===== $IMAGE_FILE FACTROYFS make end ====="

@@ -13,6 +13,7 @@
 #   limitations under the License.
 
 # config
+DEVICE_NAME=S3-alpha
 FACTORYFS_IMG=system.img
 FACTORYFS_IMG_SIZE=2147483648
 OPT_FILES=cache.img

@@ -13,6 +13,7 @@
 #   limitations under the License.
 
 # config
+DEVICE_NAME=S2LTE
 FACTORYFS_IMG=system.img.ext4
 FACTORYFS_IMG_SIZE=744488960
 OPT_FILES=

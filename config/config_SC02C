@@ -13,6 +13,7 @@
 #   limitations under the License.
 
 # config
+DEVICE_NAME=S2
 FACTORYFS_IMG=factoryfs.img
 FACTORYFS_IMG_SIZE=641728512
 OPT_FILES=

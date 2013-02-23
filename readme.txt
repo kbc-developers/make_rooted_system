@@ -21,6 +21,10 @@
       (dir)
        ├ bin/
        ├ config/
+       ├ img/
+       │  └XXXX (SC02Eなど機種名)
+       │    ├(cache.img)  ※追加するもの
+       │    └factoryfs.img(system.img.ext4 or system.img) ※追加するもの
        ├ sed/
        ├ user/  (option)
        │  └XXXX (SC02Eなど機種名)
@@ -30,9 +34,7 @@
        │ readme.txt
        ├ install_su
        ├ make_rooted_factoryfs.sh
-       ├ user_custom.sh
-       ├ (cache.img)  ※追加するもの
-       └ factoryfs.img(system.img.ext4 or system.img) ※追加するもの
+       └ user_custom.sh
 
     配置が終わったら"端末(Terminal)"から"make_rooted_factoryfs.sh"を実行してください。
 
@@ -62,6 +64,8 @@
 
   6. 更新履歴
    Mod by ma43s
+  r6予定? 複数機種のイメージをおけるようにimg置き場変更
+
   r5 機種別に複数のユーザ処理をできるようにした
      同梱のlistベースでプリインが消せない不具合修正(改行コードが\r\nになっていた)
    

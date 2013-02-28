@@ -205,7 +205,7 @@ IMAGE_FILE=$MODEL-$BUILD_SELECT
 
 echo "===== $IMAGE_FILE FACTROYFS make start ====="
 # init out/work dir
-func_init_dir
+func_init_dir $MODEL
 
 # make simg2img
 func_make_simg2img

@@ -108,7 +108,7 @@ func_extract_factoryfs_files()
 
 	./bin/ext4_utils/simg2img $_FACTORYFS_IMG $_TMP_DIR/output.img
 	sudo mount -o loop,ro,noexec,noload $_TMP_DIR/output.img $_TMP_DIR/mnt
-	sudo rsync -av $_TMP_DIR/mnt $_FACTORYFS_DIR
+	sudo rsync -av $_TMP_DIR/mnt/ $_FACTORYFS_DIR
 	sudo umount $_TMP_DIR/mnt
 }
 # -------------------------------------------------------

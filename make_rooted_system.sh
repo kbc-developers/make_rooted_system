@@ -97,7 +97,7 @@ func_extract_factoryfs_files()
 	_FACTORYFS_IMG=$3
 	
 	# extract factoryfs files
-	echo ">>>>> extract factroyfs files. wait a few minuts..."
+	echo ">>>>> extract system files. wait a few minuts..."
 	if [ ! -d $_TMP_DIR/mnt ]; then
 		mkdir -p $_TMP_DIR/mnt
 	fi
@@ -133,7 +133,7 @@ func_repack_factoryfs_files()
 	_FACTORYFS_DIR=$1
 	_FACTORYFS_IMG=$2
 	_FACTORYFS_IMG_SIZE=$3
-	echo ">>>>> repack factroyfs.img..."
+	echo ">>>>> repack system.img..."
 	cd ./bin/ext4_utils
 	sudo ./make_ext4fs -s -l $_FACTORYFS_IMG_SIZE -a system $_FACTORYFS_IMG $_FACTORYFS_DIR
 	cd $BASE_DIR
@@ -203,7 +203,7 @@ FACTORYFS_DIR="$TMP_DIR/factoryfs"
 BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
 IMAGE_FILE=$MODEL-$BUILD_SELECT
 
-echo "===== $IMAGE_FILE FACTROYFS make start ====="
+echo "===== $IMAGE_FILE SYSTEM make start ====="
 # init out/work dir
 func_init_dir $MODEL
 
@@ -236,4 +236,4 @@ func_make_odin_package $OUT_DIR $FACTORYFS_IMG $IMAGE_FILE $OPT_FILES
 echo ">>>>> cleanup..."
 sudo rm -rf $TMP_DIR
 
-echo "===== $IMAGE_FILE FACTROYFS make end ====="
+echo "===== $IMAGE_FILE SYSTEM make end ====="

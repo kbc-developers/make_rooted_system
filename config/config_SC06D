@@ -16,7 +16,7 @@
 DEVICE_NAME=S3
 FACTORYFS_IMG=system.img.ext4
 FACTORYFS_IMG_SIZE=2097152000
-OPT_FILES=
+OPT_FILES=cache.img.ext4
 
 SU_INSTALL_FUNC=func_install_su_type2
 

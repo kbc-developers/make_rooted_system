@@ -19,11 +19,8 @@ func_install_su_type1()
 	_FACTORYFS_DIR=$1
 	echo ">>>>> su package insall..."
 	sudo cp -av sed/su $_FACTORYFS_DIR/xbin/su
-	sudo cp -av sed/Superuser.apk $_FACTORYFS_DIR/app/Superuser.apk
 	sudo chown 0.0 $_FACTORYFS_DIR/xbin/su
 	sudo chmod 6755 $_FACTORYFS_DIR/xbin/su
-	sudo chown 0.0 $_FACTORYFS_DIR/app/Superuser.apk
-	sudo chmod 644 $_FACTORYFS_DIR/app/Superuser.apk
 }
 
 # -------------------------------------------------------

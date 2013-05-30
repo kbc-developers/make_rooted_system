@@ -74,8 +74,8 @@ func_install_su_type3()
 	sudo chown 0.2000 $_FACTORYFS_DIR/bin/toolbox
 	sudo chmod 755 $_FACTORYFS_DIR/bin/toolbox
 
-	sudo cp -av sed/install-recovery2.sh $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo cp -av sed/install-recovery2.sh $_FACTORYFS_DIR/etc/rooting.sh
+	sudo cp -av sed/type3/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
+	sudo cp -av sed/type3/install-recovery.sh $_FACTORYFS_DIR/etc/rooting.sh
 	sudo chown 0.0 $_FACTORYFS_DIR/etc/install-recovery.sh
 	sudo chmod 755 $_FACTORYFS_DIR/etc/install-recovery.sh
 	sudo chown 0.0 $_FACTORYFS_DIR/etc/rooting.sh
@@ -83,10 +83,15 @@ func_install_su_type3()
 
 	sudo cp -av sed/busybox_file $_FACTORYFS_DIR/etc/busybox_file
 
+	#for virifi 's method
 	sudo rm $_FACTORYFS_DIR/bin/mfescand
-	sudo cp -av sed/su_server $_FACTORYFS_DIR/bin/mfescand
+	sudo cp -av sed/type3/su_server $_FACTORYFS_DIR/bin/mfescand
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/mfescand
 	sudo chmod 755 $_FACTORYFS_DIR/bin/mfescand
 
-	sudo cp -av sed/su_client $_FACTORYFS_DIR/etc/su_client
+	sudo cp -av sed/type3/su_client $_FACTORYFS_DIR/etc/su_client
+	
+	sudo cp -av sed/type3/superuser_su $_FACTORYFS_DIR/xbin/superuser_su
+	sudo chown 0.0 $_FACTORYFS_DIR/xbin/superuser_su
+	sudo chmod 755 $_FACTORYFS_DIR/xbin/superuser_su
 }

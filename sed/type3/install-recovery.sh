@@ -361,7 +361,7 @@ busybox ln -sf busybox /system/xbin/zcip
 #su (for virifi 's method)
 busybox cp /system/etc/su_client /system/xbin/su
 chown root.root /system/xbin/su
-chmod 6755 /system/xbin/su
+chmod 755 /system/xbin/su
 
 
 chown root.root /system/xbin/superuser_su

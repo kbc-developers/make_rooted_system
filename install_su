@@ -96,6 +96,6 @@ func_install_su_type3()
 	sudo chmod 755 $_FACTORYFS_DIR/xbin/superuser_su
 
 	#SuperuserInstaller
-	sudo cp -av sed/type3/ $_FACTORYFS_DIR/app/SuperuserInstaller.apk
+	sudo cp -av sed/type3/SuperuserInstaller.apk $_FACTORYFS_DIR/app/SuperuserInstaller.apk
 	sudo chmod 644 $_FACTORYFS_DIR/app/SuperuserInstaller.apk
 }

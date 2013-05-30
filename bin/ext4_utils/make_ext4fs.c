@@ -144,6 +144,7 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 		dentries[i].mtime = stat.st_mtime;
 		dentries[i].uid = stat.st_uid;
 		dentries[i].gid = stat.st_gid;
+#if 0
 		if (fs_config_func != NULL) {
 #ifdef ANDROID
 			unsigned int mode = 0;
@@ -158,6 +159,7 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 			error("can't set android permissions - built without android support");
 #endif
 		}
+#endif
 #ifdef HAVE_SELINUX
 		if (sehnd) {
 			char *sepath = NULL;

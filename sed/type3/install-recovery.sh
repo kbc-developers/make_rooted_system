@@ -363,5 +363,10 @@ busybox cp /system/etc/su_client /system/xbin/su
 chown root.root /system/xbin/su
 chmod 6755 /system/xbin/su
 
+
+chown root.root /system/xbin/superuser_su
+chmod 6755 /system/xbin/superuser_su
+
+
 mount -o remount,ro /system
 

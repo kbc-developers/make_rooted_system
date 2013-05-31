@@ -24,8 +24,8 @@ func_init_dir()
 	if [ -d $_OUT_DIR ]; then
 		sudo rm -rf $_OUT_DIR
 	fi
-	make -p $_OUT_DIR
-	make -p $_OUT_DIR/tmp
+	mkdir -p $_OUT_DIR
+	mkdir -p $_OUT_DIR/tmp
 }
 
 

@@ -1,4 +1,4 @@
-# Copyright 2011-2013 sakuramilk,ma34s
+# Copyright 2013 ken,ma34s
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -11,15 +11,19 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+#!/bin/bash
+# -------------------------------------------------------
+CURDIR=`dirname $0`
+FACTORYFS=$1
 
-# config
-DEVICE_NAME=Note3(DCM)
-FACTORYFS_IMG=system.img.ext4
-#FACTORYFS_IMG_SIZE=2097152000
-#FACTORYFS_IMG_SIZE=2888368128
-FACTORYFS_IMG_SIZE=2480340992
-
-OPT_FILES=cache.img.ext4
-
-SU_INSTALL_FUNC=func_install_su_type3
+echo ">>>>> Sample User Script..."
+# if you want someting 
+# you can write process here.
+# this script called afeter delete_pre-install and su_install.
+#
+# $FACTORYFS : /system dir
+#	exsample) $FACTORYFS/app -> /system/app
+#
+#echo "     Volume.db"
+#sudo cp -f $CURDIR/xxxxx $FACTORYFS/yyyyy/xxxxx
 

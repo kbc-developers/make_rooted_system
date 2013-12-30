@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 # config
-DEVICE_NAME=Note3(DCM)
+DEVICE_NAME=Note3(au)
 FACTORYFS_IMG=system.img.ext4
 #FACTORYFS_IMG_SIZE=2097152000
 #FACTORYFS_IMG_SIZE=2888368128

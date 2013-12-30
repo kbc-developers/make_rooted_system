@@ -64,6 +64,10 @@
 
   6. 更新履歴
    Mod by ma43s
+  r8 以下デバイスに脳内対応(=未テスト)
+     ・SC-02F(Galaxy J docomo)
+     ・SCL22(Galaxy note3 au)
+
   r7 SC-01F(Galaxy note3 docomo)対応
 
   r6予定? 複数機種のイメージをおけるようにimg置き場変更

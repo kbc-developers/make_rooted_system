@@ -9,9 +9,10 @@
 
   2. 必要なものは？
     
-    ・linux環境 (Ubuntu12.04 32bit/64bitで動作確認しています)
+    ・linux環境 (Ubuntu12.04 32bit/64bitで動作確認しています、zlib1g-devに依存しています)
     ・純正ROM(バージョン問わず)のfactoryfs.img、SE02Eはcache.imgも必要です 
      (SoCがmsmの端末はsystem.img.ext4)
+
     
   3. どうやって使うの？
 
@@ -66,7 +67,7 @@
    Mod by ma43s
   r8 以下デバイスに脳内対応(=未テスト)
      ・SC-02F(Galaxy J docomo)
-     ・SCL22(Galaxy note3 au)
+     ・SCL22(Galaxy note3 au)->現状使えませんでしたorz
 
   r7 SC-01F(Galaxy note3 docomo)対応
 

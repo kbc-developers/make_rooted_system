@@ -1,0 +1,12 @@
+#!/system/bin/sh
+
+echo "#!/system/bin/sh" > /data/local/tmp/install_tmp.sh
+
+cat /system/etc/su_enable_cmds | while read line
+do
+	echo "/data/local/tmp/su -c \"$line\"" >> /data/local/tmp/install_tmp.sh
+#   echo "[cmd]$line"
+done
+chmod 755 /data/local/tmp/install_tmp.sh
+/data/local/tmp/install_tmp.sh
+rm /data/local/tmp/install_tmp.sh

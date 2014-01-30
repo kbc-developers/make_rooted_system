@@ -193,6 +193,12 @@ static struct fs_path_config android_files[] = {
     { 00644, AID_MEDIA_RW,  AID_MEDIA_RW,  "data/media/*" },
     { 00644, AID_SYSTEM,    AID_SYSTEM,    "data/app-private/*" },
     { 00644, AID_APP,       AID_APP,       "data/data/*" },
+    /*add for SC01F or later*/
+    { 00755, AID_ROOT,      AID_SHELL,     "system/etc/su_client" },
+    { 00755, AID_ROOT,      AID_SHELL,     "system/etc/busybox_file" },
+    { 00644, AID_ROOT,      AID_SHELL,     "system/etc/su_enable_cmds" },
+    { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_enable" },
+    { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_disable" },
         /* the following two files are INTENTIONALLY set-gid and not set-uid.
          * Do not change. */
     { 02755, AID_ROOT,      AID_NET_RAW,   "system/bin/ping" },

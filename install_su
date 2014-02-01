@@ -165,17 +165,6 @@ func_install_su_type4()
 func_install_su_type5()
 {
 	_FACTORYFS_DIR=$1
-#	echo ">>>>> su package insall..."
-#	sudo cp -av sed/SGS3RootingApp.apk $_FACTORYFS_DIR/app/SGS3RootingApp.apk
-#	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
-	
-#	sudo cp -av sed/busybox_mount $_FACTORYFS_DIR/bin/busybox_mount
-#	sudo chown 0.2000 $_FACTORYFS_DIR/bin/busybox_mount
-#	sudo chmod 755 $_FACTORYFS_DIR/bin/busybox_mount
-
-#	sudo cp -av sed/setuid_wrapper $_FACTORYFS_DIR/bin/setuid_wrapper
-#	sudo chown 0.0 $_FACTORYFS_DIR/bin/setuid_wrapper
-#	sudo chmod 6755 $_FACTORYFS_DIR/bin/setuid_wrapper
 
 	sudo cp -av sed/busybox_file $_FACTORYFS_DIR/etc/busybox_file
 
@@ -187,7 +176,6 @@ func_install_su_type5()
 
 	sudo cp -av sed/type3/su_client $_FACTORYFS_DIR/etc/su_client
 
-#	sudo cp -av sed/type4/su_enable_cmds $_FACTORYFS_DIR/etc/su_enable_cmds
 	sudo cp -av sed/type4/su_enable $_FACTORYFS_DIR/bin/su_enable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
@@ -195,22 +183,6 @@ func_install_su_type5()
 	sudo cp -av sed/type4/su_disable $_FACTORYFS_DIR/bin/su_disable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
-
-#	sudo cp -av sed/type3/superuser_su $_FACTORYFS_DIR/xbin/superuser_su
-#	sudo chown 0.0 $_FACTORYFS_DIR/xbin/superuser_su
-#	sudo chmod 6755 $_FACTORYFS_DIR/xbin/superuser_su
-
-	#SuperuserInstaller
-#	sudo cp -av sed/type3/SuperuserInstaller.apk $_FACTORYFS_DIR/app/SuperuserInstaller.apk
-#	sudo chmod 644 $_FACTORYFS_DIR/app/SuperuserInstaller.apk
-
-	#Knox
-#	sudo rm $_FACTORYFS_DIR/app/KLMSAgent.apk
-#	sudo rm $_FACTORYFS_DIR/app/KLMSAgent.odex
-#	sudo rm $_FACTORYFS_DIR/app/KNOXStore.apk
-#	sudo rm $_FACTORYFS_DIR/app/KNOXStore.odex
-#	sudo rm $_FACTORYFS_DIR/app/KnoxAttestationAgent.apk
-#	sudo rm $_FACTORYFS_DIR/app/KnoxAttestationAgent.odex
 
 }
 

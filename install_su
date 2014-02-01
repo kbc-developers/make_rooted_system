@@ -175,7 +175,7 @@ func_install_su_type5()
 	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mfescand
 	sudo chmod 755 $_FACTORYFS_DIR/bin/mfescand
 
-	sudo cp -av sed/type5/su_client $_FACTORYFS_DIR/etc/su_client
+	sudo cp -av sed/type5/etc/su_client $_FACTORYFS_DIR/etc/su_client
 	sudo chown 0.2000 $_FACTORYFS_DIR/etc/su_client
 	sudo chmod 755 $_FACTORYFS_DIR/etc/su_client
 

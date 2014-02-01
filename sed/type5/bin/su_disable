@@ -1,0 +1,12 @@
+#!/system/bin/sh
+
+# remount /system
+
+#echo "uninstall.sh was called" > /data/local/tmp/call.log
+
+if [ -f /system/xbin/su ]
+then
+/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
+/system/etc/su_client -c "/system/etc/busybox_file rm /system/xbin/su"
+/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,ro /system"
+fi

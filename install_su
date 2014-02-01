@@ -184,6 +184,30 @@ func_install_su_type5()
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
 
+	sudo mkdir $_FACTORYFS_DIR/addon.d
+	sudo cp -av sed/type5/su_disable $_FACTORYFS_DIR/addon.d/99-supersu.sh
+	sudo chown 0.0 $_FACTORYFS_DIR/bin/addon.d/99-supersu.sh
+	sudo chmod 755 $_FACTORYFS_DIR/bin/addon.d/99-supersu.sh
+
+	sudo mkdir $_FACTORYFS_DIR/bin/.ext
+	sudo cp -av sed/type5/bin/.ext/.su $_FACTORYFS_DIR/bin/.ext/.su
+	sudo chown 0.0 $_FACTORYFS_DIR/bin/.ext/.su
+	sudo chmod 755 $_FACTORYFS_DIR/bin/.ext/.su
+
+	sudo mkdir $_FACTORYFS_DIR/etc/init.d
+	sudo cp -av sed/type5/etc/init.d/99SuperSUDaemon $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
+	sudo chown 0.0 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
+	sudo chmod 755 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
+
+	sudo cp -av sed/type5/etc/init.d/.installed_su_daemon $_FACTORYFS_DIR/etc/init.d/.installed_su_daemon
+
+	sudo rm $_FACTORYFS_DIR/etc/install-recovery.sh
+	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
+
+	sudo cp -av sed/type5/xbin/daemonsu $_FACTORYFS_DIR/xbin/daemonsu
+	sudo chown 0.0 $_FACTORYFS_DIR/xbin/daemonsu
+	sudo chmod 755 $_FACTORYFS_DIR/xbin/daemonsu
+
 }
 
 func_install_su_type6()

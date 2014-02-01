@@ -197,6 +197,7 @@ static struct fs_path_config android_files[] = {
     { 00755, AID_ROOT,      AID_SHELL,     "system/etc/su_client" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/etc/busybox_file" },
     { 00644, AID_ROOT,      AID_SHELL,     "system/etc/su_enable_cmds" },
+    { 00755, AID_ROOT,      AID_SHELL,     "system/bin/mfescand" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_enable" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_disable" },
     { 00755, AID_ROOT,      AID_ROOT,      "system/addon.d/99-supersu.sh" },

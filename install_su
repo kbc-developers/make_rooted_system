@@ -166,24 +166,24 @@ func_install_su_type5()
 {
 	_FACTORYFS_DIR=$1
 
-	sudo cp -av sed/busybox_file $_FACTORYFS_DIR/etc/busybox_file
+	sudo cp -av sed/type5/busybox_file $_FACTORYFS_DIR/etc/busybox_file
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/busybox_file
 	sudo chmod 755 $_FACTORYFS_DIR/bin/busybox_file
 
 	#for virifi 's method
-	sudo cp -av sed/type4/su_server $_FACTORYFS_DIR/bin/mfescand
+	sudo cp -av sed/type5/su_server $_FACTORYFS_DIR/bin/mfescand
 	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mfescand
 	sudo chmod 755 $_FACTORYFS_DIR/bin/mfescand
 
-	sudo cp -av sed/type3/su_client $_FACTORYFS_DIR/etc/su_client
+	sudo cp -av sed/type5/su_client $_FACTORYFS_DIR/etc/su_client
 	sudo chown 0.2000 $_FACTORYFS_DIR/etc/su_client
 	sudo chmod 755 $_FACTORYFS_DIR/etc/su_client
 
-	sudo cp -av sed/type4/su_enable $_FACTORYFS_DIR/bin/su_enable
+	sudo cp -av sed/type5/su_enable $_FACTORYFS_DIR/bin/su_enable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
 
-	sudo cp -av sed/type4/su_disable $_FACTORYFS_DIR/bin/su_disable
+	sudo cp -av sed/type5/su_disable $_FACTORYFS_DIR/bin/su_disable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
 

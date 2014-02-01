@@ -199,6 +199,10 @@ static struct fs_path_config android_files[] = {
     { 00644, AID_ROOT,      AID_SHELL,     "system/etc/su_enable_cmds" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_enable" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/bin/su_disable" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/addon.d/99-supersu.sh" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/bin/.ext/.su" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/etc/init.d/99SuperSUDaemon" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/xbin/daemonsu" },
         /* the following two files are INTENTIONALLY set-gid and not set-uid.
          * Do not change. */
     { 02755, AID_ROOT,      AID_NET_RAW,   "system/bin/ping" },

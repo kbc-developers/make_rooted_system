@@ -62,9 +62,32 @@
 	user/XXXX/以下のYYYY/install.shがあると、自動実行します
 		例)user/SC02E/test/install.sh
 
+  6. SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)について
+　　1.PlayストアからSuperSUのインストールが必要です。
+　　2.Felica利用するためには、SystemStatusがOfficialである必要があり
+　　　現状、起動時Scanを回避するために、毎起動後に手動でrooted化が必要になります
+　　　　->起動時にroot権限を必要とするアプリが使えません
 
-  6. 更新履歴
-   Mod by ma43s
+　　　　※Terminal/adbより su_enable と打つ必要があります
+　　　　※GNT3eXT起動にて対応可能です(起動時一定時間後の自動enableにも対応）
+
+　　3.SupeSUが不安定な時があります。
+　　　アプリの許可設定時に、SuperSUから制御が返らず、結果アプリがハング状態になる事があります
+　　　　一度許可した後は、特に問題ないのでrootedアプリの初回起動時にハングした場合には
+　　　　アプリを強制終了して起動し直して下さい。
+
+　　4. mountについて
+　　　busybox mountを利用してください。
+　　　mount(/system/bin/mount)では罠により挙動不審な事もあるようです。
+
+　　その他にも制限があるかもしれません。
+
+
+  7. 更新履歴
+   Mod by ma43s,homuhomu
+  r9 以下デバイスにて制限付きでRootedでFelica利用可能に
+     ・SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)
+
   r8 以下デバイスに脳内対応(=未テスト)
      ・SC-02F(Galaxy J docomo)
      ・SCL22(Galaxy note3 au)->現状使えませんでしたorz

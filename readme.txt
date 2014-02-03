@@ -85,6 +85,9 @@
 
   7. 更新履歴
    Mod by ma43s,homuhomu
+  r10 type5のbusybox追加,mount安定したかも？
+      もしかしたら、SCL22(Galaxy note3 au)で動く様になったかも、持ってないので不明
+
   r9 以下デバイスにて制限付きでRootedでFelica利用可能に
      ・SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)
 

@@ -206,7 +206,7 @@ func_install_su_type5()
 	sudo chown 0.0 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
 	sudo chmod 755 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
 
-	sudo cp -av sed/type5/etc/init.d/.installed_su_daemon $_FACTORYFS_DIR/etc/init.d/.installed_su_daemon
+	sudo cp -av sed/type5/etc/.installed_su_daemon $_FACTORYFS_DIR/etc/.installed_su_daemon
 
 	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
 

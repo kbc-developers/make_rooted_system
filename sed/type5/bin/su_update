@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 tmp_dir=/data/local/tmp/su_update_tmp
-tmp_apk=$tmp_dir/supersu.apk
+tmp_apk=supersu.apk
 
 apk_su=assets/supersu.arm.png
 curr_su_deamon=/system/xbin/daemonsu
@@ -13,21 +13,17 @@ cleanup()
 	exit $1	
 }
 
-system_mount()
-{
-	_type=$1
-	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
-}
-
 get_install_apk()
 {
 	apk_name=`/system/etc/su_client -c \\\"ls /data/app/ | grep eu.chainfire.supersu\\\"`
 	if [ ! -z "$apk_name" ] ;then
 	
-		mkdir $tmp_dir
+		mkdir -p $tmp_dir
+		chmod 755 $tmp_dir
 	
-		/system/etc/su_client -c "cp /data/app/$apk_name $tmp_apk && chmod 666 $tmp_apk"
-		if [ -f "$tmp_apk" ] ;then
+		/system/etc/su_client -c "/system/etc/busybox_file cp /data/app/$apk_name $tmp_dir/$tmp_apk"
+		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"
+		if [ -f "$tmp_dir/$tmp_apk" ] ;then
 			echo $apk_name detect
 		else
 			echo supersu not installed
@@ -40,9 +36,14 @@ get_install_apk()
 
 get_apk_su()
 {
-	cd $tmp_dir
-	/system/etc/busybox_file unzip -q $tmp_apk $apk_su -d $tmp_dir
-	chmod 755 $tmp_dir/$apk_su
+	/system/etc/su_client -c "/system/etc/busybox_file unzip $tmp_dir/$tmp_apk -d $tmp_dir"
+	/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir/$apk_su"
+	/system/etc/su_client -c "/system/etc/busybox_file chown 0.0 $tmp_dir/$apk_su"
+	if [ -f "$tmp_dir/$apk_su" ] ;then
+		echo new su binary extracted
+	else
+		echo extract error new su binary!!
+	fi
 }
 
 check_update()
@@ -60,14 +61,11 @@ check_update()
 
 replace_su_binary()
 {
-	system_mount rw
-	/system/etc/su_client -c "cp $tmp_dir/$apk_su $curr_su_deamon"
-	/system/etc/su_client -c "chmod 755 $curr_su_deamon"
-	/system/etc/su_client -c "cp $tmp_dir/$apk_su $curr_su_deamon"
-	/system/etc/su_client -c "chmod 755 $curr_su_deamon"
-	/system/etc/su_client -c "cp $curr_su_deamon /system/bin/.ext/.su"
-	system_mount ro
-	echo new su binary installed
+	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su_deamon"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
+	echo new su binary installed and reboot now!!!
 }
 
 get_install_apk

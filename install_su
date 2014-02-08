@@ -187,6 +187,10 @@ func_install_su_type5()
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
 
+	sudo cp -av sed/type5/bin/su_update $_FACTORYFS_DIR/bin/su_update
+	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_update
+	sudo chmod 755 $_FACTORYFS_DIR/bin/su_update
+
 	sudo mkdir $_FACTORYFS_DIR/addon.d
 	sudo cp -av sed/type5/addon.d/99-supersu.sh $_FACTORYFS_DIR/addon.d/99-supersu.sh
 	sudo chown 0.0 $_FACTORYFS_DIR/addon.d/99-supersu.sh

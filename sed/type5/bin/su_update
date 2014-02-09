@@ -1,5 +1,5 @@
 #!/system/bin/sh
-#su_enable_version=2
+#su_update_version=2
 
 tmp_dir=/data/local/tmp/su_update_tmp
 tmp_apk=supersu.apk

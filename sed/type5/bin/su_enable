@@ -1,5 +1,5 @@
 #!/system/bin/sh
-#su_enable_version=2
+#su_enable_version=21
 system_mount()
 {
 	_type=$1
@@ -370,11 +370,10 @@ install_busybox()
 /system/etc/su_client -c "/system/etc/busybox_file ln -sf /system/xbin/busybox /system/xbin/zcip"
 /system/etc/su_client -c "/system/etc/busybox_file cp /system/xbin/daemonsu /system/xbin/su"
 }
-
+kill_daemonsu
 system_mount rw
 install_busybox
 /system/etc/su_client -c "chown 0.0 /system/xbin/su"
 /system/etc/su_client -c "chmod 755 /system/xbin/su"
 system_mount ro
-kill_daemonsu
 /system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"

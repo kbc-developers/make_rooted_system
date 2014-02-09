@@ -1,4 +1,5 @@
 #!/system/bin/sh
+#su_enable_version=2
 
 tmp_dir=/data/local/tmp/su_update_tmp
 tmp_apk=supersu.apk
@@ -7,10 +8,25 @@ apk_su=assets/supersu.arm.png
 curr_su_deamon=/system/xbin/daemonsu
 curr_su=/system/xbin/su
 
+system_mount()
+{
+	_type=$1
+	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
+}
+
 cleanup()
 {
 	rm -rf $tmp_dir
 	exit $1	
+}
+
+kill_daemonsu()
+{
+	daemonsu_id=`ps | grep daemonsu | awk '{ print $2}'`
+
+	for id in $daemonsu_id; do
+		/system/etc/su_client -c "kill -9 $id"
+	done
 }
 
 get_install_apk()
@@ -43,6 +59,7 @@ get_apk_su()
 		echo new su binary extracted
 	else
 		echo extract error new su binary!!
+		cleanup 1
 	fi
 }
 
@@ -61,14 +78,19 @@ check_update()
 
 replace_su_binary()
 {
-	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
+	system_mount rw
 	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su_deamon"
 	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su"
 	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
+
+	sync;sync;sync
+	system_mount ro
 	echo new su binary installed and reboot now!!!
 }
 
 get_install_apk
 get_apk_su
-check_update && replace_su_binary
+check_update
+kill_daemonsu
+replace_su_binary
 cleanup

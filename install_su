@@ -183,15 +183,15 @@ func_install_su_type5()
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_control
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_control
 
-	sudo cp -av sed/type5/bin/control $_FACTORYFS_DIR/bin/su_enable
+	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_enable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
 
-	sudo cp -av sed/type5/bin/control $_FACTORYFS_DIR/bin/su_disable
+	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_disable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
 
-	sudo cp -av sed/type5/bin/control $_FACTORYFS_DIR/bin/su_update
+	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_update
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_update
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_update
 

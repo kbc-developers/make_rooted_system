@@ -1,12 +1,28 @@
 #!/system/bin/sh
+#su_disable_version=2
 
 # remount /system
+system_mount()
+{
+	_type=$1
+	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
+}
 
-#echo "uninstall.sh was called" > /data/local/tmp/call.log
+kill_daemonsu()
+{
+	daemonsu_id=`ps | grep daemonsu | awk '{ print $2}'`
+
+	for id in $daemonsu_id; do
+		/system/etc/su_client -c "kill -9 $id"
+	done
+}
+
 
 if [ -f /system/xbin/su ]
 then
-/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
+system_mount rw
 /system/etc/su_client -c "/system/etc/busybox_file rm /system/xbin/su"
-/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,ro /system"
+system_mount ro
 fi
+
+kill_daemonsu

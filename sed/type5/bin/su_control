@@ -1,5 +1,13 @@
 #!/system/bin/sh
-#su_enable_version=21
+#su_control_version=23
+
+tmp_dir=/data/local/tmp/su_update_tmp
+tmp_apk=supersu.apk
+
+apk_su=assets/supersu.arm.png
+curr_su_deamon=/system/xbin/daemonsu
+curr_su=/system/xbin/su
+
 system_mount()
 {
 	_type=$1
@@ -370,10 +378,121 @@ install_busybox()
 /system/etc/su_client -c "/system/etc/busybox_file ln -sf /system/xbin/busybox /system/xbin/zcip"
 /system/etc/su_client -c "/system/etc/busybox_file cp /system/xbin/daemonsu /system/xbin/su"
 }
-kill_daemonsu
-system_mount rw
-install_busybox
-/system/etc/su_client -c "chown 0.0 /system/xbin/su"
-/system/etc/su_client -c "chmod 755 /system/xbin/su"
-system_mount ro
-/system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"
+
+#------------------------------------------
+get_install_apk()
+{
+	apk_name=`/system/etc/su_client -c \\\"ls /data/app/ | grep eu.chainfire.supersu\\\"`
+	if [ ! -z "$apk_name" ] ;then
+	
+		mkdir -p $tmp_dir
+		chmod 755 $tmp_dir
+	
+		/system/etc/su_client -c "/system/etc/busybox_file cp /data/app/$apk_name $tmp_dir/$tmp_apk"
+		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"
+		if [ -f "$tmp_dir/$tmp_apk" ] ;then
+			echo $apk_name detect
+		else
+			echo supersu not installed
+			cleanup 1
+		fi
+	else
+		echo supersu not installed
+		cleanup 1
+	fi
+}
+
+get_apk_su()
+{
+	/system/etc/su_client -c "/system/etc/busybox_file unzip $tmp_dir/$tmp_apk -d $tmp_dir"
+	/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir/$apk_su"
+	/system/etc/su_client -c "/system/etc/busybox_file chown 0.0 $tmp_dir/$apk_su"
+	if [ -f "$tmp_dir/$apk_su" ] ;then
+		echo new su binary extracted
+	else
+		echo extract error new su binary!!
+		cleanup 1
+	fi
+}
+
+check_update()
+{
+	tmp_ver=`$tmp_dir/$apk_su -V`
+	cur_ver=`$curr_su_deamon -V`
+	echo tmp_ver: $tmp_ver
+	echo cur_ver: $cur_ver
+	if [ $tmp_ver -gt $cur_ver ] ;then
+		echo DETECT UPDATE SuperSU!!!
+	else
+		cleanup 1
+	fi
+}
+
+replace_su_binary()
+{
+	system_mount rw
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su_deamon"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
+
+	sync;sync;sync
+#	system_mount ro
+	echo new su binary installed and reboot now!!!
+}
+#------------------------------------------
+
+su_enable()
+{
+#	kill_daemonsu
+	system_mount rw
+	install_busybox
+	/system/etc/su_client -c "chown 0.0 /system/xbin/su"
+	/system/etc/su_client -c "chmod 755 /system/xbin/su"
+	system_mount ro
+	/system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"
+}
+
+su_disable()
+{
+	kill_daemonsu
+
+	if [ -f /system/xbin/su ]
+	then
+	system_mount rw
+	/system/etc/su_client -c "/system/etc/busybox_file rm /system/xbin/su"
+	system_mount ro
+	fi
+}
+
+su_update()
+{
+#	kill_daemonsu
+	get_install_apk
+	get_apk_su
+	check_update
+	replace_su_binary
+	cleanup
+}
+#------------------------------------------
+su_contronl()
+{
+	case "$1" in
+	  "enable" ) su_enable ;;
+	  "disable" ) su_disable ;;
+	  "update" ) su_update ;;
+	  * ) echo "error: not found command" && exit 2 ;;
+	esac
+}
+
+#echo arg0:$0
+#echo arg1:$1
+path=$0
+case "${path##*/}" in
+  "su_enable" ) su_enable ;;
+  "su_disable" ) su_disable ;;
+  "su_update" ) su_update ;;
+  "su_control" ) su_control $1 ;;
+  * ) echo "error: not found command" && exit 2 ;;
+esac
+
+

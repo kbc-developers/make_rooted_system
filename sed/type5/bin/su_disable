@@ -18,6 +18,8 @@ kill_daemonsu()
 }
 
 
+kill_daemonsu
+
 if [ -f /system/xbin/su ]
 then
 system_mount rw
@@ -25,4 +27,4 @@ system_mount rw
 system_mount ro
 fi
 
-kill_daemonsu
+

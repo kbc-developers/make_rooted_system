@@ -87,10 +87,10 @@ replace_su_binary()
 	system_mount ro
 	echo new su binary installed and reboot now!!!
 }
+kill_daemonsu
 
 get_install_apk
 get_apk_su
 check_update
-kill_daemonsu
 replace_su_binary
 cleanup

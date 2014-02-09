@@ -11,7 +11,10 @@ curr_su=/system/xbin/su
 system_mount()
 {
 	_type=$1
-	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
+	stat=`mount |grep /system | grep $1`
+	if [ -z stat ] ;then
+		/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
+	fi
 }
 
 kill_daemonsu()

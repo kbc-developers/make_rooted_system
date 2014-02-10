@@ -82,9 +82,24 @@
 
 　　その他にも制限があるかもしれません。
 
+　　5. SuperSUの更新について
+　　　SuperSUアプリからsuバイナリの更新はできません
+　　　　現状では更新はエラーとなり結果問題ないですが、
+　　　　仮に更新出来た場合、起動時からRootedとなりFelicaが使えなくなります
+　　　　そのためSuperSUからsuバイナリの更新はしないでください
+　　　　
+　　　　suバイナリの更新は、SuperSUアプリをアップデート後に、
+　　　　su_updateコマンドを実行する事で可能です。
+　　　　GNTeXT3ではsu_enable実行時にsuバイナリの更新を判断し自動で更新します。
+　
+　　　　suバイナリ更新後は再起動が必要になります。
 
   7. 更新履歴
    Mod by ma43s,homuhomu
+
+  r12 以下デバイスにてSuperSUの更新に対応
+    SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)/SCL22(Galaxy note3 au)
+
   r11 以下デバイスにて制限付きでRootedでFelica利用可能に
 	SCL22(Galaxy note3 au) ->実機確認して頂きました
 

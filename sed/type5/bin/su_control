@@ -383,9 +383,20 @@ install_busybox()
 }
 
 #------------------------------------------
+cleanup()
+{
+	/system/etc/su_client -c "/system/etc/busybox_file rm -rf $tmp_dir"
+	exit $1
+}
+
 get_install_apk()
 {
 	apk_name=`/system/etc/su_client -c \\\"ls /data/app/ | grep eu.chainfire.supersu\\\"`
+	
+	if [ -d "$tmp_dir" ] ; then
+		/system/etc/su_client -c "/system/etc/busybox_file rm -rf $tmp_dir"
+	fi
+
 	if [ ! -z "$apk_name" ] ;then
 	
 		mkdir -p $tmp_dir
@@ -407,7 +418,7 @@ get_install_apk()
 
 get_apk_su()
 {
-	/system/etc/su_client -c "/system/etc/busybox_file unzip $tmp_dir/$tmp_apk -d $tmp_dir"
+	/system/etc/su_client -c "/system/etc/busybox_file unzip -q $tmp_dir/$tmp_apk -d $tmp_dir"
 	/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir/$apk_su"
 	/system/etc/su_client -c "/system/etc/busybox_file chown 0.0 $tmp_dir/$apk_su"
 	if [ -f "$tmp_dir/$apk_su" ] ;then

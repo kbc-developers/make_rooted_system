@@ -399,8 +399,8 @@ get_install_apk()
 
 	if [ ! -z "$apk_name" ] ;then
 	
-		system/etc/su_client -c "/system/etc/busybox_file mkdir -p $tmp_dir"
-		system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir"
+		/system/etc/su_client -c "/system/etc/busybox_file mkdir -p $tmp_dir"
+		/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir"
 	
 		/system/etc/su_client -c "/system/etc/busybox_file cp /data/app/$apk_name $tmp_dir/$tmp_apk"
 		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"

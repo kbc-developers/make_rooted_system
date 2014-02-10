@@ -488,13 +488,20 @@ su_update()
 	cleanup 0
 }
 #------------------------------------------
+su_contronl_help()
+{
+	echo "error: not found command"
+	echo "su_control enable|disable|update"
+	exit 2
+}
+
 su_contronl()
 {
 	case "$1" in
 	  "enable" ) su_enable ;;
 	  "disable" ) su_disable ;;
 	  "update" ) su_update ;;
-	  * ) echo "error: not found command" && exit 2 ;;
+	  * ) su_contronl_help ;;
 	esac
 }
 
@@ -506,7 +513,7 @@ case "${path##*/}" in
   "su_disable" ) su_disable ;;
   "su_update" ) su_update ;;
   "su_control" ) su_control $1 ;;
-  * ) echo "error: not found command" && exit 2 ;;
+  * ) su_contronl_help ;;
 esac
 
 

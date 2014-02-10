@@ -1,5 +1,5 @@
 #!/system/bin/sh
-#su_control_version=23
+#su_control_version=24
 
 tmp_dir=/data/local/tmp/su_update_tmp
 tmp_apk=supersu.apk
@@ -399,8 +399,8 @@ get_install_apk()
 
 	if [ ! -z "$apk_name" ] ;then
 	
-		mkdir -p $tmp_dir
-		chmod 755 $tmp_dir
+		system/etc/su_client -c "/system/etc/busybox_file mkdir -p $tmp_dir"
+		system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir"
 	
 		/system/etc/su_client -c "/system/etc/busybox_file cp /data/app/$apk_name $tmp_dir/$tmp_apk"
 		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"
@@ -412,7 +412,7 @@ get_install_apk()
 		fi
 	else
 		echo supersu not installed
-		cleanup 1
+		cleanup 2
 	fi
 }
 
@@ -425,7 +425,7 @@ get_apk_su()
 		echo new su binary extracted
 	else
 		echo extract error new su binary!!
-		cleanup 1
+		cleanup 3
 	fi
 }
 
@@ -438,7 +438,7 @@ check_update()
 	if [ $tmp_ver -gt $cur_ver ] ;then
 		echo DETECT UPDATE SuperSU!!!
 	else
-		cleanup 1
+		cleanup 4
 	fi
 }
 
@@ -485,7 +485,7 @@ su_update()
 	get_apk_su
 	check_update
 	replace_su_binary
-	cleanup
+	cleanup 0
 }
 #------------------------------------------
 su_contronl()

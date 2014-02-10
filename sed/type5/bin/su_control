@@ -1,5 +1,6 @@
 #!/system/bin/sh
-#su_control_version=24
+#su_control_version=25
+public_version=0.2.5
 
 tmp_dir=/data/local/tmp/su_update_tmp
 tmp_apk=supersu.apk
@@ -491,7 +492,7 @@ su_update()
 su_contronl_help()
 {
 	echo "error: not found command"
-	echo "su_control enable|disable|update"
+	echo "su_control enable|disable|update|version"
 	exit 2
 }
 
@@ -501,6 +502,7 @@ su_contronl()
 	  "enable" ) su_enable ;;
 	  "disable" ) su_disable ;;
 	  "update" ) su_update ;;
+	  "version" ) echo $public_version && exit 0 ;;
 	  * ) su_contronl_help ;;
 	esac
 }

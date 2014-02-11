@@ -13,8 +13,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#su_control_version=25
-public_version=0.2.5
+#su_control_version=26
+public_version=0.2.6
 
 tmp_dir=/data/local/tmp/su_update_tmp
 tmp_apk=supersu.apk

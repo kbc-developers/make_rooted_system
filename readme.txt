@@ -96,6 +96,8 @@
 
   7. 更新履歴
    Mod by ma43s,homuhomu
+  v3.1.1(=v3.1r1)
+    SuperSu proインストール環境に対応
 
   v3.1.0(=v3.1r0)
     typo修正などコード整理

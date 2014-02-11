@@ -1,5 +1,5 @@
 
-  *** 純正ROM su入り factoryfs.img(system.img.ext4)生成スクリプト rev2 ***
+  *** 純正ROM su入り factoryfs.img(system.img.ext4)生成スクリプト ***
   ほむらModded  and ma34s modded
 
   1. これはなに？
@@ -97,35 +97,38 @@
   7. 更新履歴
    Mod by ma43s,homuhomu
 
-  r12 以下デバイスにてSuperSUの更新に対応
+  v3.1.0(=v3.1r0)
+    typo修正などコード整理
+
+  v3.0r12 以下デバイスにてSuperSUの更新に対応
     SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)/SCL22(Galaxy note3 au)
 
-  r11 以下デバイスにて制限付きでRootedでFelica利用可能に
+  v3.0r11 以下デバイスにて制限付きでRootedでFelica利用可能に
 	SCL22(Galaxy note3 au) ->実機確認して頂きました
 
-  r10 type5のbusybox追加,mount安定したかも？
+  v3.0r10 type5のbusybox追加,mount安定したかも？
       もしかしたら、SCL22(Galaxy note3 au)で動く様になったかも、持ってないので不明
 
-  r9 以下デバイスにて制限付きでRootedでFelica利用可能に
+  v3.0r9 以下デバイスにて制限付きでRootedでFelica利用可能に
      ・SC-01F(Galaxy note3 docomo)/SC-02F(Galaxy J docomo)
 
-  r8 以下デバイスに脳内対応(=未テスト)
+  v3.0r8 以下デバイスに脳内対応(=未テスト)
      ・SC-02F(Galaxy J docomo)
      ・SCL22(Galaxy note3 au)->現状使えませんでしたorz
 
-  r7 SC-01F(Galaxy note3 docomo)対応
+  v3.0r7 SC-01F(Galaxy note3 docomo)対応
 
-  r6予定? 複数機種のイメージをおけるようにimg置き場変更
+  v3.0r6予定? 複数機種のイメージをおけるようにimg置き場変更
 
-  r5 機種別に複数のユーザ処理をできるようにした
+  v3.0r5 機種別に複数のユーザ処理をできるようにした
      同梱のlistベースでプリインが消せない不具合修正(改行コードが\r\nになっていた)
    
-  r4 スクリプトを整理し、機種選択するように変更
+  v3.0r4 スクリプトを整理し、機種選択するように変更
 　　　user_custom処理を追加できるようにした
 
-  r2 SE02Eでrooted処理を選択できるようにした
+  v3.0r2 SE02Eでrooted処理を選択できるようにした
  
-  r1 任意のプリインストール削除できる機能を追加
+  v3.0r1 任意のプリインストール削除できる機能を追加
 　    SE02Eでrooted処理を一旦外した
 
    Mod by ほむら

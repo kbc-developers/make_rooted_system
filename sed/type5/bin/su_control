@@ -406,21 +406,20 @@ cleanup()
 
 get_install_apk()
 {
-	apk_name=`/system/etc/su_client -c \\\"ls /data/app/ | grep eu.chainfire.supersu\\\"`
-	
+	apk_path=`pm path eu.chainfire.supersu | cut -c9-`
 	if [ -d "$tmp_dir" ] ; then
 		/system/etc/su_client -c "/system/etc/busybox_file rm -rf $tmp_dir"
 	fi
 
-	if [ ! -z "$apk_name" ] ;then
+	if [ ! -z "$apk_path" ] ;then
 	
 		/system/etc/su_client -c "/system/etc/busybox_file mkdir -p $tmp_dir"
 		/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir"
 	
-		/system/etc/su_client -c "/system/etc/busybox_file cp /data/app/$apk_name $tmp_dir/$tmp_apk"
+		/system/etc/su_client -c "/system/etc/busybox_file cp $apk_path $tmp_dir/$tmp_apk"
 		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"
 		if [ -f "$tmp_dir/$tmp_apk" ] ;then
-			echo $apk_name detect
+			echo $apk_path detect
 		else
 			echo supersu not installed
 			cleanup 1

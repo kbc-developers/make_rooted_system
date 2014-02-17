@@ -139,6 +139,14 @@ func_repack_factoryfs_files()
 	cd $BASE_DIR
 }
 # -------------------------------------------------------
+func_get_system_version()
+{
+	_FACTORYFS_DIR=$1
+	_BUILD_VER=`grep "ro.build.version.incremental" $1/build.prop | cut -d'=' -f2`
+
+	echo $_BUILD_VER
+}
+# -------------------------------------------------------
 func_make_odin_package()
 {
 	_OUT_DIR=$1
@@ -201,9 +209,9 @@ FACTORYFS_DIR="$TMP_DIR/factoryfs"
 . ./config/config_$MODEL
 
 BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
-IMAGE_FILE=$MODEL-$BUILD_SELECT
+#IMAGE_FILE=$MODEL-$BUILD_SELECT
 
-echo "===== $IMAGE_FILE SYSTEM make start ====="
+echo "===== $MODEL-$BUILD_SELECT SYSTEM make start ====="
 # init out/work dir
 func_init_dir $MODEL
 
@@ -212,6 +220,11 @@ func_make_simg2img
 
 # extract factoryfs files
 func_extract_factoryfs_files $TMP_DIR $FACTORYFS_DIR ./img/$MODEL/$FACTORYFS_IMG
+
+# get image name from build.prop
+BUILD_VER=`func_get_system_version  $FACTORYFS_DIR`
+echo this sysytem image is $BUILD_VER
+IMAGE_FILE=$BUILD_VER-$BUILD_SELECT
 
 # install delete pre-install files
 func_delete_preinstall_files $FACTORYFS_DIR $MODEL

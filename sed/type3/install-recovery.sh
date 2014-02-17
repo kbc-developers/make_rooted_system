@@ -1,10 +1,13 @@
 #!/system/bin/sh
 
+dd if=/system/etc/busybox_file of=/data/local/tmp/busybox
+chmod 755 /data/local/tmp/busybox
 # remount /system
-mount -o remount,rw /system
+/data/local/tmp/busybox mount -o remount,rw /system
 
 
 # busybox
+
 dd if=/system/etc/busybox_file of=/system/xbin/busybox
 chown root.shell /system/xbin/busybox
 chmod 755 /system/xbin/busybox
@@ -359,14 +362,24 @@ busybox ln -sf busybox /system/xbin/zcip
 
 
 #su (for virifi 's method)
-busybox cp /system/etc/su_client /system/xbin/su
+chown root.root /system/etc/su_client
+chmod 755 /system/etc/su_client
+
+#su_update
+chown root.root /system/etc/su_update.sh
+chmod 755 /system/etc/su_update.sh
+/system/etc/su_update.sh
+
+chown root.root /system/bin/.kbc/.superuser_su
+chmod 6755 /system/bin/.kbc/.superuser_su
+
+cp /system/bin/.kbc/.superuser_su /system/xbin/su
 chown root.root /system/xbin/su
-chmod 755 /system/xbin/su
+chmod 6755 /system/xbin/su
 
+/data/local/tmp/busybox mount -o remount,ro /system
 
-chown root.root /system/xbin/superuser_su
-chmod 6755 /system/xbin/superuser_su
-
-
-mount -o remount,ro /system
+#start daemon
+/system/bin/.kbc/.superuser_su --daemon &
+rm /data/local/tmp/busybox
 

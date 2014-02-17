@@ -91,9 +91,9 @@ func_install_su_type3()
 
 	sudo cp -av sed/type3/su_client $_FACTORYFS_DIR/etc/su_client
 	
-	sudo cp -av sed/type3/superuser_su $_FACTORYFS_DIR/xbin/superuser_su
-	sudo chown 0.0 $_FACTORYFS_DIR/xbin/superuser_su
-	sudo chmod 6755 $_FACTORYFS_DIR/xbin/superuser_su
+	sudo cp -av sed/type3/superuser_su $_FACTORYFS_DIR/bin/.kbc/.superuser_su
+	sudo chown 0.0 $_FACTORYFS_DIR/bin/.kbc/.superuser_su
+	sudo chmod 6755 $_FACTORYFS_DIR/bin/.kbc/.superuser_su
 
 	#SuperuserInstaller
 	sudo cp -av sed/type3/SuperuserInstaller.apk $_FACTORYFS_DIR/app/SuperuserInstaller.apk

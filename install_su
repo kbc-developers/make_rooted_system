@@ -169,7 +169,8 @@ func_install_su_rara7886()
 	_FACTORYFS_DIR=$1
 	_TMP_DIR=$2
 	apk_fix=$_TMP_DIR/apkfix
-	apktool=$PWD/sed/rara7886/apktool
+	apktool_patch=$PWD/sed/rara7886/apktool
+	
 	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
 
 	sudo cp -av sed/rara7886/etc/busybox_file $_FACTORYFS_DIR/etc/busybox_file
@@ -221,7 +222,7 @@ func_install_su_rara7886()
 	sudo cp -av sed/rara7886/bin/.ext/.su $_FACTORYFS_DIR/bin/.ext/.su
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/.ext/.su
 	sudo chmod 755 $_FACTORYFS_DIR/bin/.ext/.su
-
+	
 	sudo mkdir $_FACTORYFS_DIR/etc/init.d
 	sudo cp -av sed/rara7886/etc/init.d/99SuperSUDaemon $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
 	sudo chown 0.0 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
@@ -238,7 +239,7 @@ func_install_su_rara7886()
 	###SecSetting Patch###
 	sudo mkdir $apk_fix
 	sudo java -jar $apktool/baksmali-2.0.3.jar -c $BOOT -d $_FACTORYFS_DIR/framework -x $_FACTORYFS_DIR/app/SecSettings.odex -o $apk_fix/SecSettings
-	sudo patch -d $apk_fix/SecSettings/com/android/settings/deviceinfo/ < $apktool/Status.smali.patch
+	sudo patch -d $apk_fix/SecSettings/com/android/settings/deviceinfo/ < $apktool_patch/Status.smali.patch
 	sudo java -jar $apktool/smali-2.0.3.jar $apk_fix/SecSettings -o $apk_fix/classes.dex
 	sudo 7z a -mx=0 -tzip $_FACTORYFS_DIR/app/SecSettings.apk $apk_fix/classes.dex
 	sudo rm $_FACTORYFS_DIR/app/SecSettings.odex

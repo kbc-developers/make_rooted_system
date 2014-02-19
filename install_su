@@ -192,10 +192,6 @@ func_install_su_rara7886()
 	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mount
 	sudo chmod 755 $_FACTORYFS_DIR/bin/mount
 
-	sudo cp -av sed/rara7886/bin/su_daemonkill $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_daemonkill
-
 	sudo cp -av sed/rara7886/app/supersu.apk $_FACTORYFS_DIR/app/Superuser.apk
 
 	#for virifi 's method
@@ -207,17 +203,25 @@ func_install_su_rara7886()
 	sudo chown 0.2000 $_FACTORYFS_DIR/etc/su_client
 	sudo chmod 755 $_FACTORYFS_DIR/etc/su_client
 
-	sudo cp -av sed/rara7886/bin/su_enable $_FACTORYFS_DIR/bin/su_enable
+	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_control
+	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_control
+	sudo chmod 755 $_FACTORYFS_DIR/bin/su_control
+
+	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_enable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
 
-	sudo cp -av sed/rara7886/bin/su_disable $_FACTORYFS_DIR/bin/su_disable
+	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_disable
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
 
-	sudo cp -av sed/rara7886/bin/su_update $_FACTORYFS_DIR/bin/su_update
+	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_update
 	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_update
 	sudo chmod 755 $_FACTORYFS_DIR/bin/su_update
+
+	sudo cp -av sed/rara7886/bin/su_daemonkill $_FACTORYFS_DIR/bin/su_daemonkill
+	sudo chown 0.2000 $_FACTORYFS_DIR/bin/su_daemonkill
+	sudo chmod 755 $_FACTORYFS_DIR/bin/su_daemonkill
 
 	sudo mkdir $_FACTORYFS_DIR/addon.d
 	sudo cp -av sed/rara7886/addon.d/99-supersu.sh $_FACTORYFS_DIR/addon.d/99-supersu.sh

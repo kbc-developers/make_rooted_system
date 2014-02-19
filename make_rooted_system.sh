@@ -16,7 +16,7 @@
 # -------------------------------------------------------
 export apktool=$PWD/bin/apktool
 
-sudo bin/setup.sh
+bin/setup.sh
 
 
 func_init_dir()
@@ -218,7 +218,7 @@ BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
 
 echo "===== $MODEL-$BUILD_SELECT SYSTEM make start ====="
 # init out/work dir
-func_init_dir $MODEL
+func_init_dir out/$MODEL
 
 # make simg2img
 func_make_simg2img

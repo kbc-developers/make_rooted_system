@@ -183,7 +183,7 @@ func_user_process()
 	done
 
 	# call user custom
-	sh ./user_custom.sh $_FACTORYFS $_MODEL
+	sh user/user_custom.sh $_FACTORYFS $_MODEL
 }
 # -------------------------------------------------------
 #inport install su functions

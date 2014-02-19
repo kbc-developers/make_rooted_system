@@ -129,6 +129,7 @@ func_install_su_type3()
 func_install_su_type5()
 {
 	_FACTORYFS_DIR=$1
+	### install rooting binaries
 	func_install_from_list $_FACTORYFS_DIR sed/type5 sed/type5/install_list
 }
 
@@ -141,72 +142,8 @@ func_install_su_rara7886()
 	
 	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
 
-	sudo cp -av sed/rara7886/etc/busybox_file $_FACTORYFS_DIR/etc/busybox_file
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/busybox_file
-	sudo chmod 755 $_FACTORYFS_DIR/etc/busybox_file
-
-	sudo cp -av sed/rara7886/bin/prepare_param.sh $_FACTORYFS_DIR/bin/prepare_param.sh
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/prepare_param.sh
-	sudo chmod 755 $_FACTORYFS_DIR/bin/prepare_param.sh
-
-	sudo mv $_FACTORYFS_DIR/bin/mount $_FACTORYFS_DIR/bin/mount.org
-	sudo cp -av sed/rara7886/bin/mount $_FACTORYFS_DIR/bin/mount
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mount
-	sudo chmod 755 $_FACTORYFS_DIR/bin/mount
-
-	sudo cp -av sed/rara7886/app/supersu.apk $_FACTORYFS_DIR/app/Superuser.apk
-
-	#for virifi 's method
-	sudo cp -av sed/rara7886/bin/su_server $_FACTORYFS_DIR/bin/kiesexe
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/kiesexe
-	sudo chmod 755 $_FACTORYFS_DIR/bin/kiesexe
-
-	sudo cp -av sed/rara7886/etc/su_client $_FACTORYFS_DIR/etc/su_client
-	sudo chown 0.2000 $_FACTORYFS_DIR/etc/su_client
-	sudo chmod 755 $_FACTORYFS_DIR/etc/su_client
-
-	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_control
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_control
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_control
-
-	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_enable
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
-
-	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_disable
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
-
-	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_update
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_update
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_update
-
-	sudo cp -av sed/rara7886/bin/su_daemonkill $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_daemonkill
-
-	sudo mkdir $_FACTORYFS_DIR/addon.d
-	sudo cp -av sed/rara7886/addon.d/99-supersu.sh $_FACTORYFS_DIR/addon.d/99-supersu.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/addon.d/99-supersu.sh
-	sudo chmod 755 $_FACTORYFS_DIR/addon.d/99-supersu.sh
-
-	sudo mkdir $_FACTORYFS_DIR/bin/.ext
-	sudo cp -av sed/rara7886/bin/.ext/.su $_FACTORYFS_DIR/bin/.ext/.su
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/.ext/.su
-	sudo chmod 755 $_FACTORYFS_DIR/bin/.ext/.su
-	
-	sudo mkdir $_FACTORYFS_DIR/etc/init.d
-	sudo cp -av sed/rara7886/etc/init.d/99SuperSUDaemon $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-	sudo chmod 755 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-
-	sudo cp -av sed/rara7886/etc/.installed_su_daemon $_FACTORYFS_DIR/etc/.installed_su_daemon
-
-	sudo cp -av sed/rara7886/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
-
-	sudo cp -av sed/rara7886/xbin/daemonsu $_FACTORYFS_DIR/xbin/daemonsu
-	sudo chown 0.0 $_FACTORYFS_DIR/xbin/daemonsu
-	sudo chmod 755 $_FACTORYFS_DIR/xbin/daemonsu
+	### install rooting binaries
+	func_install_from_list $_FACTORYFS_DIR sed/rara7886 sed/rara7886/install_list
 
 	###SecSetting Patch###
 	sudo mkdir $apk_fix

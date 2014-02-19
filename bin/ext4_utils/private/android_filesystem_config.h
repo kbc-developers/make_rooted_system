@@ -219,6 +219,7 @@ static struct fs_path_config android_files[] = {
     { 00644, AID_ROOT,      AID_ROOT,      "system/bin/fsslcmnd" },
     { 06755, AID_ROOT,      AID_ROOT,      "system/bin/setuid_wrapper" },
     { 00755, AID_ROOT,      AID_ROOT,      "system/etc/install-recovery.sh" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/etc/install-recovery-2.sh" },
     { 00755, AID_ROOT,      AID_ROOT,      "system/etc/rooting.sh" },
 		/* the following file is INTENTIONALLY set-uid, and IS included
 		 * in user builds. */

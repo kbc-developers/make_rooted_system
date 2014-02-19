@@ -23,28 +23,44 @@ apk_su=assets/supersu.arm.png
 curr_su_deamon=/system/xbin/daemonsu
 curr_su=/system/xbin/su
 
+bb="/system/etc/busybox_file"
+
+get_uid()
+{
+	$bb id | $bb grep -o -e uid=[0-9]* | $bb cut -d '=' -f2
+}
+
+runcommand()
+{
+	if [ `get_uid` eq 0 ] then;
+		$1
+	else
+		/system/etc/su_client -c "$1"
+	fi
+}
+
 system_mount()
 {
 	_type=$1
 	stat=`mount |grep /system | grep $1`
 	if [ -z $stat ] ;then
-		/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
+		runcommand "$bb mount -o remount,$1 /system"
 	fi
 }
 
 kill_daemonsu()
 {
-	daemonsu_id=`ps | grep daemonsu | /system/etc/busybox_file awk '{ print $2}'`
+	daemonsu_id=`ps | grep daemonsu | $bb awk '{ print $2}'`
 
 	for id in $daemonsu_id; do
-		/system/etc/su_client -c "kill -9 $id"
+		runcommand "kill -9 $id"
 	done
 }
 
 #------------------------------------------
 cleanup()
 {
-	/system/etc/su_client -c "/system/etc/busybox_file rm -rf $tmp_dir"
+	runcommand "$bb rm -rf $tmp_dir"
 	exit $1
 }
 
@@ -52,16 +68,16 @@ get_install_apk()
 {
 	apk_path=`pm path eu.chainfire.supersu | cut -c9-`
 	if [ -d "$tmp_dir" ] ; then
-		/system/etc/su_client -c "/system/etc/busybox_file rm -rf $tmp_dir"
+		runcommand "$bb rm -rf $tmp_dir"
 	fi
 
 	if [ ! -z "$apk_path" ] ;then
 	
-		/system/etc/su_client -c "/system/etc/busybox_file mkdir -p $tmp_dir"
-		/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir"
+		runcommand "$bb mkdir -p $tmp_dir"
+		runcommand "$bb chmod 755 $tmp_dir"
 	
-		/system/etc/su_client -c "/system/etc/busybox_file cp $apk_path $tmp_dir/$tmp_apk"
-		/system/etc/su_client -c "chmod 666 $tmp_dir/$tmp_apk"
+		runcommand "$bb cp $apk_path $tmp_dir/$tmp_apk"
+		runcommand "chmod 666 $tmp_dir/$tmp_apk"
 		if [ -f "$tmp_dir/$tmp_apk" ] ;then
 			echo $apk_path detect
 		else
@@ -76,9 +92,9 @@ get_install_apk()
 
 get_apk_su()
 {
-	/system/etc/su_client -c "/system/etc/busybox_file unzip -q $tmp_dir/$tmp_apk -d $tmp_dir"
-	/system/etc/su_client -c "/system/etc/busybox_file chmod 755 $tmp_dir/$apk_su"
-	/system/etc/su_client -c "/system/etc/busybox_file chown 0.0 $tmp_dir/$apk_su"
+	runcommand "$bb unzip -q $tmp_dir/$tmp_apk -d $tmp_dir"
+	runcommand "$bb chmod 755 $tmp_dir/$apk_su"
+	runcommand "$bb chown 0.0 $tmp_dir/$apk_su"
 	if [ -f "$tmp_dir/$apk_su" ] ;then
 		echo new su binary extracted
 	else
@@ -103,9 +119,9 @@ check_update()
 replace_su_binary()
 {
 	system_mount rw
-	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su_deamon"
-	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su $curr_su"
-	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
+	runcommand "$bb cp -av $tmp_dir/$apk_su $curr_su_deamon"
+	runcommand "$bb cp -av $tmp_dir/$apk_su $curr_su"
+	runcommand "$bb cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
 
 	sync;sync;sync
 	system_mount ro
@@ -122,10 +138,10 @@ su_enable()
 	fi
 
 	system_mount rw
-	/system/etc/su_client -c "chown 0.0 /system/xbin/su"
-	/system/etc/su_client -c "chmod 755 /system/xbin/su"
+	runcommand "chown 0.0 /system/xbin/su"
+	runcommand "chmod 755 /system/xbin/su"
 	system_mount ro
-	/system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"
+	runcommand "/system/xbin/daemonsu --auto-daemon &"
 }
 
 su_disable()
@@ -135,7 +151,7 @@ su_disable()
 	if [ -f /system/xbin/su ]
 	then
 	system_mount rw
-	/system/etc/su_client -c "/system/etc/busybox_file rm /system/xbin/su"
+	runcommand "$bb rm /system/xbin/su"
 	system_mount ro
 	fi
 }

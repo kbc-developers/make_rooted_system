@@ -221,6 +221,7 @@ static struct fs_path_config android_files[] = {
     { 00755, AID_ROOT,      AID_ROOT,      "system/etc/install-recovery.sh" },
     { 00755, AID_ROOT,      AID_ROOT,      "system/etc/install-recovery-2.sh" },
     { 00755, AID_ROOT,      AID_ROOT,      "system/etc/rooting.sh" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/etc/install-busybox.sh" },
 		/* the following file is INTENTIONALLY set-uid, and IS included
 		 * in user builds. */
     { 06750, AID_ROOT,      AID_SHELL,     "system/bin/run-as" },

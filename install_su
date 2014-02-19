@@ -158,6 +158,8 @@ func_install_su_type5()
 
 	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
 
+	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-busybox.sh
+
 	sudo cp -av sed/type5/xbin/daemonsu $_FACTORYFS_DIR/xbin/daemonsu
 	sudo chown 0.0 $_FACTORYFS_DIR/xbin/daemonsu
 	sudo chmod 755 $_FACTORYFS_DIR/xbin/daemonsu

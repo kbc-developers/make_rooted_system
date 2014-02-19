@@ -3,7 +3,7 @@
 etc/busybox_file			etc/busybox_file			0.0		755
 bin/mount					bin/mount					0.2000	755
 #for virifi 's method
-bin/su_server				bin/kiesex					0.2000	755
+bin/su_server				bin/kiesexe					0.2000	755
 etc/su_client				etc/su_client				0.2000	755
 #for supersu control
 bin/su_control				bin/su_control				0.0		755

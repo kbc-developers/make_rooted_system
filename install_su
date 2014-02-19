@@ -18,7 +18,7 @@ func_install_from_list()
 {
 	_FACTORYFS_DIR=$1
 	_SRC_DIR=$2
-	_LIST=$3
+	_LIST=$_SRC_DIR/install_list
 	
 	while read line
 	do
@@ -43,30 +43,28 @@ func_install_from_list()
 func_install_su_type1()
 {
 	_FACTORYFS_DIR=$1
-	echo ">>>>> su package insall..."
 	sudo cp -av sed/su $_FACTORYFS_DIR/xbin/su
 	sudo chown 0.0 $_FACTORYFS_DIR/xbin/su
 	sudo chmod 6755 $_FACTORYFS_DIR/xbin/su
+	func_install_from_list $_FACTORYFS_DIR sed/type1
 }
 
 # -------------------------------------------------------
 func_install_su_type2()
 {
 	_FACTORYFS_DIR=$1
-	echo ">>>>> su package insall..."
 	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
 	sudo rm $_FACTORYFS_DIR/bin/toolbox
-	func_install_from_list $_FACTORYFS_DIR sed/type2 sed/type2/install_list
+	func_install_from_list $_FACTORYFS_DIR sed/type2
 }
 func_install_su_type3()
 {
 	_FACTORYFS_DIR=$1
-	echo ">>>>> su package insall..."
 	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
 	sudo rm $_FACTORYFS_DIR/bin/toolbox
 	sudo rm $_FACTORYFS_DIR/bin/mfescand
 	
-	func_install_from_list $_FACTORYFS_DIR sed/type3 sed/type3/install_list
+	func_install_from_list $_FACTORYFS_DIR sed/type3
 }
 
 func_install_su_type5()
@@ -74,7 +72,7 @@ func_install_su_type5()
 	_FACTORYFS_DIR=$1
 	### install rooting binaries
 	echo ">>>>> su package insall..."
-	func_install_from_list $_FACTORYFS_DIR sed/type5 sed/type5/install_list
+	func_install_from_list $_FACTORYFS_DIR sed/type5
 }
 
 func_install_su_rara7886()
@@ -87,8 +85,7 @@ func_install_su_rara7886()
 	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
 
 	### install rooting binaries
-	echo ">>>>> su package insall..."
-	func_install_from_list $_FACTORYFS_DIR sed/rara7886 sed/rara7886/install_list
+	func_install_from_list $_FACTORYFS_DIR sed/rara7886
 
 	###SecSetting Patch###
 	sudo mkdir $apk_fix

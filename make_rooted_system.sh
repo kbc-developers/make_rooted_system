@@ -233,6 +233,7 @@ func_delete_preinstall_files $FACTORYFS_DIR $MODEL
 
 # install su
 if [ "$BUILD_SELECT" = 'ROOTED' ]; then
+	echo ">>>>> su package insall..."
 	$SU_INSTALL_FUNC $FACTORYFS_DIR $TMP_DIR
 fi
 

@@ -33,6 +33,9 @@ func_install_from_list()
 			if [ ! -d  $_dir ] ; then
 				$SUDO mkdir -p $_dir
 			fi
+			if [ ! -f  $_FACTORYFS_DIR/$_dst ] ; then
+				$SUDO rm $_FACTORYFS_DIR/$_dst
+			fi
 			$SUDO cp -av $_SRC_DIR/$_src $_FACTORYFS_DIR/$_dst
 			$SUDO chown $_own $_FACTORYFS_DIR/$_dst
 			$SUDO chmod $_mod $_FACTORYFS_DIR/$_dst
@@ -51,16 +54,12 @@ func_install_su_type2()
 {
 	_FACTORYFS_DIR=$1
 	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
-	sudo rm $_FACTORYFS_DIR/bin/toolbox
 	func_install_from_list $_FACTORYFS_DIR sed/type2
 }
 func_install_su_type3()
 {
 	_FACTORYFS_DIR=$1
 	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
-	sudo rm $_FACTORYFS_DIR/bin/toolbox
-	sudo rm $_FACTORYFS_DIR/bin/mfescand
-	
 	func_install_from_list $_FACTORYFS_DIR sed/type3
 }
 

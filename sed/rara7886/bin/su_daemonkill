@@ -1,0 +1,9 @@
+#!/system/bin/sh
+#kill_daemonsu
+daemonsu_id=`ps | grep daemonsu | /system/etc/busybox_file awk '{ print $2}'`
+echo $daemonsu_id
+for id in $daemonsu_id; do
+/system/etc/su_client -c " /system/etc/busybox_file kill -9 $id"
+done
+
+exit 0

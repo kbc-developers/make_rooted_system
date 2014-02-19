@@ -1,0 +1,28 @@
+#!/system/bin/sh
+
+curr_su_deamon=/system/xbin/daemonsu
+curr_su=/system/xbin/su
+
+check_update()
+{
+	tmp_ver=`/system/bin/.ext/.su -V`
+	cur_ver=`$curr_su_deamon -V`
+	echo tmp_ver: $tmp_ver
+	echo cur_ver: $cur_ver
+	if [ $tmp_ver -ne $cur_ver ] ;then
+		echo DETECT UPDATE SuperSU!!!
+	else
+		exit
+	fi
+}
+
+replace_su_binary()
+{
+su_daemonkill
+	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av /system/bin/.ext/.su  $curr_su_deamon"
+	/system/etc/su_client -c "/system/etc/busybox_file cp -av /system/bin/.ext/.su $curr_su"
+	echo new su binary installed and reboot now!!!
+}
+
+check_update && replace_su_binary

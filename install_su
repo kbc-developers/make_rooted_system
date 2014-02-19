@@ -43,9 +43,6 @@ func_install_from_list()
 func_install_su_type1()
 {
 	_FACTORYFS_DIR=$1
-	sudo cp -av sed/su $_FACTORYFS_DIR/xbin/su
-	sudo chown 0.0 $_FACTORYFS_DIR/xbin/su
-	sudo chmod 6755 $_FACTORYFS_DIR/xbin/su
 	func_install_from_list $_FACTORYFS_DIR sed/type1
 }
 

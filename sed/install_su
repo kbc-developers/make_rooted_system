@@ -13,7 +13,8 @@
 #   limitations under the License.
 
 # -------------------------------------------------------
-SUDO=sudo
+SUDO=
+#SUDO=sudo
 func_install_from_list()
 {
 	_FACTORYFS_DIR=$1
@@ -53,13 +54,13 @@ func_install_su_type1()
 func_install_su_type2()
 {
 	_FACTORYFS_DIR=$1
-	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
+	$SUDO rm $_FACTORYFS_DIR/bin/fsslcmnd
 	func_install_from_list $_FACTORYFS_DIR sed/type2
 }
 func_install_su_type3()
 {
 	_FACTORYFS_DIR=$1
-	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
+	$SUDO rm $_FACTORYFS_DIR/bin/fsslcmnd
 	func_install_from_list $_FACTORYFS_DIR sed/type3
 }
 
@@ -84,17 +85,17 @@ func_install_su_rara7886()
 	func_install_from_list $_FACTORYFS_DIR sed/rara7886
 
 	###SecSetting Patch###
-	sudo mkdir $apk_fix
-	sudo java -jar $apktool/baksmali-2.0.3.jar -c $BOOT -d $_FACTORYFS_DIR/framework -x $_FACTORYFS_DIR/app/SecSettings.odex -o $apk_fix/SecSettings
-	sudo patch -d $apk_fix/SecSettings/com/android/settings/deviceinfo/ < $apktool_patch/Status.smali.patch
-	sudo java -jar $apktool/smali-2.0.3.jar $apk_fix/SecSettings -o $apk_fix/classes.dex
-	sudo 7z a -mx=0 -tzip $_FACTORYFS_DIR/app/SecSettings.apk $apk_fix/classes.dex
-	sudo rm $_FACTORYFS_DIR/app/SecSettings.odex
-	sudo rm $apk_fix/classes.dex
-	sudo rm -rf $apk_fix
+	$SUDO mkdir $apk_fix
+	$SUDO java -jar $apktool/baksmali-2.0.3.jar -c $BOOT -d $_FACTORYFS_DIR/framework -x $_FACTORYFS_DIR/app/SecSettings.odex -o $apk_fix/SecSettings
+	$SUDO patch -d $apk_fix/SecSettings/com/android/settings/deviceinfo/ < $apktool_patch/Status.smali.patch
+	$SUDO java -jar $apktool/smali-2.0.3.jar $apk_fix/SecSettings -o $apk_fix/classes.dex
+	$SUDO 7z a -mx=0 -tzip $_FACTORYFS_DIR/app/SecSettings.apk $apk_fix/classes.dex
+	$SUDO rm $_FACTORYFS_DIR/app/SecSettings.odex
+	$SUDO rm $apk_fix/classes.dex
+	$SUDO rm -rf $apk_fix
 
 	###break apk file###
-	sudo 7z d -mx=9 -tzip $_FACTORYFS_DIR/app/SysScope.apk AndroidManifest.xml
+	$SUDO 7z d -mx=9 -tzip $_FACTORYFS_DIR/app/SysScope.apk AndroidManifest.xml
 
 }
 

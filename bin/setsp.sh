@@ -11,15 +11,21 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+# -------------------------------------------------------
 #!/bin/bash
-# -------------------------------------------------------
-# -------------------------------------------------------
-export apktool=$PWD/bin/apktool
-export BASE_DIR=`pwd`
 
-export _MODEL_SEL=$1
-export _BUILD_SEL=$2
+#for ubuntu
+if [ -z `cat /etc/issue | grep Ubuntu` ]
 
+	if [ -z `dpkg -l | grep zlib1g-dev` ]
+		 apt-get install zlib1g-dev
+	fi
 
-sudo sh bin/setup.sh 
-sudo sh bin/core.sh $BASE_DIR $_MODEL_SEL $_BUILD_SEL
+	if [ -z `dpkg -l | grep p7zip-full` ]
+		 apt-get install p7zip-full
+	fi
+	if [ -z `java -version` ]
+		 apt-get install openjdk-6-jre
+	fi
+	exit 0
+fi

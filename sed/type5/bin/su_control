@@ -108,7 +108,7 @@ replace_su_binary()
 	/system/etc/su_client -c "/system/etc/busybox_file cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
 
 	sync;sync;sync
-#	system_mount ro
+	system_mount ro
 	echo new su binary installed and reboot now!!!
 }
 #------------------------------------------
@@ -153,7 +153,7 @@ su_update()
 su_contronl_help()
 {
 	echo "error: not found command"
-	echo "su_control enable|disable|update|version"
+	echo "su_control enable|disable|update|su_daemonkill"
 	exit 2
 }
 
@@ -163,7 +163,7 @@ su_contronl()
 	  "enable" ) su_enable ;;
 	  "disable" ) su_disable ;;
 	  "update" ) su_update ;;
-	  "version" ) echo $public_version && exit 0 ;;
+	  "daemonkill" ) kill_daemonsu ;;
 	  * ) su_contronl_help ;;
 	esac
 }
@@ -176,6 +176,7 @@ case "${path##*/}" in
   "su_disable" ) su_disable ;;
   "su_update" ) su_update ;;
   "su_control" ) su_control $1 ;;
+  "su_daemonkill" ) kill_daemonsu ;;
   * ) su_contronl_help ;;
 esac
 

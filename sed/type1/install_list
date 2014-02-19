@@ -1,0 +1,3 @@
+#	list of install files 
+# srcfile					dst							owner	permission
+su							xbin/su						0.0		6755

@@ -1,4 +1,4 @@
-# Copyright 2011-2014 sakuramilk ma34s,homuhomu
+# Copyright 2011-2014 sakuramilk ma34s homuhomu rara7886
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ func_delete_preinstall_files $FACTORYFS_DIR $MODEL
 
 # install su
 if [ "$BUILD_SELECT" = 'ROOTED' ]; then
-	$SU_INSTALL_FUNC $FACTORYFS_DIR
+	$SU_INSTALL_FUNC $FACTORYFS_DIR $TMP_DIR
 fi
 
 # call user custom

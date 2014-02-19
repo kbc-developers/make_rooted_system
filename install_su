@@ -1,4 +1,4 @@
-# Copyright 2011-2014 sakuramilk ma34s homuhomu
+# Copyright 2011-2014 sakuramilk ma34s homuhomu rara7886
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -110,6 +110,10 @@ func_install_su_type5()
 	sudo chown 0.0 $_FACTORYFS_DIR/etc/busybox_file
 	sudo chmod 755 $_FACTORYFS_DIR/etc/busybox_file
 
+	sudo mv $_FACTORYFS_DIR/bin/mount $_FACTORYFS_DIR/bin/mount.org
+	sudo cp -av sed/type5/bin/mount $_FACTORYFS_DIR/bin/mount
+	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mount
+	sudo chmod 755 $_FACTORYFS_DIR/bin/mount
 	#for virifi 's method
 	sudo cp -av sed/type5/bin/su_server $_FACTORYFS_DIR/bin/kiesexe
 	sudo chown 0.2000 $_FACTORYFS_DIR/bin/kiesexe

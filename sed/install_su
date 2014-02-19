@@ -33,7 +33,7 @@ func_install_from_list()
 			if [ ! -d  $_dir ] ; then
 				$SUDO mkdir -p $_dir
 			fi
-			if [ ! -f  $_FACTORYFS_DIR/$_dst ] ; then
+			if [ -f  $_FACTORYFS_DIR/$_dst ] ; then
 				$SUDO rm $_FACTORYFS_DIR/$_dst
 			fi
 			$SUDO cp -av $_SRC_DIR/$_src $_FACTORYFS_DIR/$_dst

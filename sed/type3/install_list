@@ -1,0 +1,16 @@
+#	list of install files 
+# srcfile					dst							owner	permission
+app/SGS3RootingApp.apk		app/SGS3RootingApp.apk		0.0		644
+bin/busybox_mount			bin/busybox_mount			0.2000	755
+bin/setuid_wrapper			bin/setuid_wrapper			0.2000	755
+bin/toolbox					bin/toolbox					0.2000	755
+etc/install-recovery.sh		etc/install-recovery.sh		0.0		755
+etc/install-recovery.sh		etc/install-busybox.sh		0.0		755
+etc/su_update.sh			etc/su_update.sh			0.0		755
+etc/busybox_file			etc/busybox_file			0.0		755
+#for virifi 's method
+bin/su_server				bin/mfescand				0.2000	755
+etc/su_client				etc/su_client				0.2000	755
+bin/.kbc/.superuser_su		bin/.kbc/.superuser_su		0.0		6755
+#SuperuserInstaller
+app/SuperuserInstaller.apk	app/SuperuserInstaller.apk	0.0		644

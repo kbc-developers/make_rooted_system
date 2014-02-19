@@ -84,52 +84,18 @@ func_install_su_type3()
 {
 	_FACTORYFS_DIR=$1
 	echo ">>>>> su package insall..."
-	sudo cp -av sed/SGS3RootingApp.apk $_FACTORYFS_DIR/app/SGS3RootingApp.apk
 	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
-	
-	sudo cp -av sed/busybox_mount $_FACTORYFS_DIR/bin/busybox_mount
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/busybox_mount
-	sudo chmod 755 $_FACTORYFS_DIR/bin/busybox_mount
-
-	sudo cp -av sed/setuid_wrapper $_FACTORYFS_DIR/bin/setuid_wrapper
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/setuid_wrapper
-	sudo chmod 6755 $_FACTORYFS_DIR/bin/setuid_wrapper
-
 	sudo rm $_FACTORYFS_DIR/bin/toolbox
-	sudo cp -av sed/toolbox $_FACTORYFS_DIR/bin/toolbox
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/toolbox
-	sudo chmod 755 $_FACTORYFS_DIR/bin/toolbox
-
-	sudo cp -av sed/type3/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo cp -av sed/type3/install-recovery.sh $_FACTORYFS_DIR/etc/rooting.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo chmod 755 $_FACTORYFS_DIR/etc/install-recovery.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/rooting.sh
-	sudo chmod 755 $_FACTORYFS_DIR/etc/rooting.sh
-
-	sudo cp -av sed/busybox_file $_FACTORYFS_DIR/etc/busybox_file
-
-	#for virifi 's method
 	sudo rm $_FACTORYFS_DIR/bin/mfescand
-	sudo cp -av sed/type3/su_server $_FACTORYFS_DIR/bin/mfescand
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/mfescand
-	sudo chmod 755 $_FACTORYFS_DIR/bin/mfescand
-
-	sudo cp -av sed/type3/su_client $_FACTORYFS_DIR/etc/su_client
 	
-	sudo cp -av sed/type3/superuser_su $_FACTORYFS_DIR/bin/.kbc/.superuser_su
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/.kbc/.superuser_su
-	sudo chmod 6755 $_FACTORYFS_DIR/bin/.kbc/.superuser_su
-
-	#SuperuserInstaller
-	sudo cp -av sed/type3/SuperuserInstaller.apk $_FACTORYFS_DIR/app/SuperuserInstaller.apk
-	sudo chmod 644 $_FACTORYFS_DIR/app/SuperuserInstaller.apk
+	func_install_from_list $_FACTORYFS_DIR sed/type3 sed/type3/install_list
 }
 
 func_install_su_type5()
 {
 	_FACTORYFS_DIR=$1
 	### install rooting binaries
+	echo ">>>>> su package insall..."
 	func_install_from_list $_FACTORYFS_DIR sed/type5 sed/type5/install_list
 }
 
@@ -143,6 +109,7 @@ func_install_su_rara7886()
 	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
 
 	### install rooting binaries
+	echo ">>>>> su package insall..."
 	func_install_from_list $_FACTORYFS_DIR sed/rara7886 sed/rara7886/install_list
 
 	###SecSetting Patch###

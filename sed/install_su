@@ -71,17 +71,17 @@ func_install_su_type5()
 	func_install_from_list $_FACTORYFS_DIR sed/type5
 }
 
-func_install_su_rara7886()
+func_install_su_type5-rara7886()
 {
 	_FACTORYFS_DIR=$1
 	_TMP_DIR=$2
 	apk_fix=$_TMP_DIR/apkfix
-	apktool_patch=$PWD/sed/rara7886/apktool
+	apktool_patch=$PWD/sed/type5-rara7886/apktool
 	
 	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
 
 	### install rooting binaries
-	func_install_from_list $_FACTORYFS_DIR sed/rara7886
+	func_install_from_list $_FACTORYFS_DIR sed/type5-rara7886
 
 	###SecSetting Patch###
 	sudo mkdir $apk_fix

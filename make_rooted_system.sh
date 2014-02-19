@@ -186,6 +186,35 @@ func_user_process()
 	sh ./user_custom.sh $_FACTORYFS $_MODEL
 }
 # -------------------------------------------------------
+func_select_method()
+{
+if [ $# -eq 1 ] ;then
+	echo $1
+	return
+fi
+	_FUNCTIONS="$@"
+	_IDX=1
+	for _CONF in $_FUNCTIONS; do
+		_SEL_ITEM=`echo $_CONF | cut -d'_' -f4`
+
+		_ITEM="$_ITEM
+$_IDX) $_SEL_ITEM"
+	   _IDX=`expr $_IDX + 1`
+	done
+
+
+	_IDX=`expr $_IDX - 1`
+	read -p "$_ITEM
+chose rooting method [1-$_IDX] : " _SEL_NUM
+	_METHOD=`echo $_FUNCTIONS | cut -d' ' -f$_SEL_NUM`
+
+	if [ -z "$_METHOD" ]; then
+		echo $1
+		return
+	fi
+	echo $_METHOD
+}
+# -------------------------------------------------------
 #inport install su functions
 . ./sed/install_su
 
@@ -216,6 +245,11 @@ FACTORYFS_DIR="$TMP_DIR/factoryfs"
 BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
 #IMAGE_FILE=$MODEL-$BUILD_SELECT
 
+SU_INSTALL_FUNCTION=`func_select_method $SU_INSTALL_FUNC`
+
+echo $SU_INSTALL_FUNCTION select!
+exit 1
+
 echo "===== $MODEL-$BUILD_SELECT SYSTEM make start ====="
 # init out/work dir
 func_init_dir out/$MODEL
@@ -237,7 +271,7 @@ func_delete_preinstall_files $FACTORYFS_DIR $MODEL
 # install su
 if [ "$BUILD_SELECT" = 'ROOTED' ]; then
 	echo ">>>>> su package insall..."
-	$SU_INSTALL_FUNC $FACTORYFS_DIR $TMP_DIR
+	$SU_INSTALL_FUNCTION $FACTORYFS_DIR $TMP_DIR
 fi
 
 # call user custom

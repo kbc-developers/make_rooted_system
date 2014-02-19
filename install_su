@@ -12,7 +12,33 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# -------------------------------------------------------
+SUDO=sudo
+func_install_from_list()
+{
+	_FACTORYFS_DIR=$1
+	_SRC_DIR=$2
+	_LIST=$3
+	
+	while read line
+	do
+		_src=`echo $line | awk '{ print $1}'`
+		_dst=`echo $line | awk '{ print $2}'`
+		_own=`echo $line | awk '{ print $3}'`
+		_mod=`echo $line | awk '{ print $4}'`
 
+		if [ -z "`echo $line |grep -e "\\s*#"`" ] ;then
+			echo ...now instaring /system/$_dst
+			_dir=`dirname $_FACTORYFS_DIR/$_dst`
+			if [ ! -d  $_dir ] ; then
+				$SUDO mkdir -p $_dir
+			fi
+			$SUDO cp -av $_SRC_DIR/$_src $_FACTORYFS_DIR/$_dst
+			$SUDO chown $_own $_FACTORYFS_DIR/$_dst
+			$SUDO chmod $_mod $_FACTORYFS_DIR/$_dst
+		fi
+	done < $_LIST
+}
 # -------------------------------------------------------
 func_install_su_type1()
 {
@@ -100,74 +126,10 @@ func_install_su_type3()
 	sudo chmod 644 $_FACTORYFS_DIR/app/SuperuserInstaller.apk
 }
 
-
-
 func_install_su_type5()
 {
 	_FACTORYFS_DIR=$1
-
-	sudo cp -av sed/type5/etc/busybox_file $_FACTORYFS_DIR/etc/busybox_file
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/busybox_file
-	sudo chmod 755 $_FACTORYFS_DIR/etc/busybox_file
-
-	sudo mv $_FACTORYFS_DIR/bin/mount $_FACTORYFS_DIR/bin/mount.org
-	sudo cp -av sed/type5/bin/mount $_FACTORYFS_DIR/bin/mount
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/mount
-	sudo chmod 755 $_FACTORYFS_DIR/bin/mount
-	#for virifi 's method
-	sudo cp -av sed/type5/bin/su_server $_FACTORYFS_DIR/bin/kiesexe
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/kiesexe
-	sudo chmod 755 $_FACTORYFS_DIR/bin/kiesexe
-
-	sudo cp -av sed/type5/etc/su_client $_FACTORYFS_DIR/etc/su_client
-	sudo chown 0.2000 $_FACTORYFS_DIR/etc/su_client
-	sudo chmod 755 $_FACTORYFS_DIR/etc/su_client
-
-	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_control
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_control
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_control
-
-	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_enable
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_enable
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_enable
-
-	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_disable
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_disable
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_disable
-
-	sudo cp -av sed/type5/bin/su_control $_FACTORYFS_DIR/bin/su_update
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/su_update
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_update
-
-	sudo cp -av sed/rara7886/bin/su_control $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chown 0.2000 $_FACTORYFS_DIR/bin/su_daemonkill
-	sudo chmod 755 $_FACTORYFS_DIR/bin/su_daemonkill
-
-	sudo mkdir $_FACTORYFS_DIR/addon.d
-	sudo cp -av sed/type5/addon.d/99-supersu.sh $_FACTORYFS_DIR/addon.d/99-supersu.sh
-	sudo chown 0.0 $_FACTORYFS_DIR/addon.d/99-supersu.sh
-	sudo chmod 755 $_FACTORYFS_DIR/addon.d/99-supersu.sh
-
-	sudo mkdir $_FACTORYFS_DIR/bin/.ext
-	sudo cp -av sed/type5/bin/.ext/.su $_FACTORYFS_DIR/bin/.ext/.su
-	sudo chown 0.0 $_FACTORYFS_DIR/bin/.ext/.su
-	sudo chmod 755 $_FACTORYFS_DIR/bin/.ext/.su
-
-	sudo mkdir $_FACTORYFS_DIR/etc/init.d
-	sudo cp -av sed/type5/etc/init.d/99SuperSUDaemon $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-	sudo chown 0.0 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-	sudo chmod 755 $_FACTORYFS_DIR/etc/init.d/99SuperSUDaemon
-
-	sudo cp -av sed/type5/etc/.installed_su_daemon $_FACTORYFS_DIR/etc/.installed_su_daemon
-
-	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-recovery.sh
-
-	sudo cp -av sed/type5/etc/install-recovery.sh $_FACTORYFS_DIR/etc/install-busybox.sh
-
-	sudo cp -av sed/type5/xbin/daemonsu $_FACTORYFS_DIR/xbin/daemonsu
-	sudo chown 0.0 $_FACTORYFS_DIR/xbin/daemonsu
-	sudo chmod 755 $_FACTORYFS_DIR/xbin/daemonsu
-
+	func_install_from_list $_FACTORYFS_DIR sed/type5 sed/type5/install_list
 }
 
 func_install_su_rara7886()

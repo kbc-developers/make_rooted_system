@@ -16,6 +16,9 @@
 # -------------------------------------------------------
 export apktool=$PWD/bin/apktool
 
+sudo bin/setup.sh
+
+
 func_init_dir()
 {
 	if [ -z "$1" ]; then

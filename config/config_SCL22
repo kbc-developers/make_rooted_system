@@ -21,5 +21,8 @@ FACTORYFS_IMG_SIZE=2480340992
 
 OPT_FILES=cache.img.ext4
 
-SU_INSTALL_FUNC=func_install_su_type5
+SU_INSTALL_FUNC="
+func_install_su_type5
+func_install_su_type5-rara7886
+"
 

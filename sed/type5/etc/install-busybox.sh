@@ -1,22 +1,7 @@
 #!/system/bin/sh
-#su_enable_version=21
-system_mount()
-{
-	_type=$1
-	/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,$1 /system"
-}
 
-kill_daemonsu()
-{
-	daemonsu_id=`ps | grep daemonsu | /system/etc/busybox_file awk '{ print $2}'`
+/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
 
-	for id in $daemonsu_id; do
-		/system/etc/su_client -c "kill -9 $id"
-	done
-}
-
-install_busybox()
-{
 /system/etc/su_client -c "/system/etc/busybox_file cp /system/etc/busybox_file /system/xbin/busybox"
 /system/etc/su_client -c "chown 0.2000 /system/xbin/busybox"
 /system/etc/su_client -c "chmod 755 /system/xbin/busybox"
@@ -369,11 +354,5 @@ install_busybox()
 /system/etc/su_client -c "/system/etc/busybox_file ln -sf /system/xbin/busybox /system/xbin/zcat"
 /system/etc/su_client -c "/system/etc/busybox_file ln -sf /system/xbin/busybox /system/xbin/zcip"
 /system/etc/su_client -c "/system/etc/busybox_file cp /system/xbin/daemonsu /system/xbin/su"
-}
-kill_daemonsu
-system_mount rw
-install_busybox
-/system/etc/su_client -c "chown 0.0 /system/xbin/su"
-/system/etc/su_client -c "chmod 755 /system/xbin/su"
-system_mount ro
-/system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"
+
+/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,ro /system"

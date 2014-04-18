@@ -1,0 +1,114 @@
+# Copyright 2011-2014 sakuramilk ma34s homuhomu rara7886
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# -------------------------------------------------------
+SUDO=sudo
+func_install_from_list()
+{
+	_FACTORYFS_DIR=$1
+	_SRC_DIR=$2
+	_LIST=$_SRC_DIR/install_list
+	
+	while read line
+	do
+		_src=`echo $line | awk '{ print $1}'`
+		_dst=`echo $line | awk '{ print $2}'`
+		_own=`echo $line | awk '{ print $3}'`
+		_mod=`echo $line | awk '{ print $4}'`
+
+		if [ -z "`echo $line |grep -e "\\s*#"`" ] ;then
+			echo ...now instaring /system/$_dst
+			_dir=`dirname $_FACTORYFS_DIR/$_dst`
+			if [ ! -d  $_dir ] ; then
+				$SUDO mkdir -p $_dir
+			fi
+			if [ -f  $_FACTORYFS_DIR/$_dst ] ; then
+				$SUDO rm $_FACTORYFS_DIR/$_dst
+			fi
+			$SUDO cp -av $_SRC_DIR/$_src $_FACTORYFS_DIR/$_dst
+			$SUDO chown $_own $_FACTORYFS_DIR/$_dst
+			$SUDO chmod $_mod $_FACTORYFS_DIR/$_dst
+		fi
+	done < $_LIST
+}
+# -------------------------------------------------------
+func_install_su_type1()
+{
+	_FACTORYFS_DIR=$1
+	func_install_from_list $_FACTORYFS_DIR sed/type1
+}
+
+# -------------------------------------------------------
+func_install_su_type2()
+{
+	_FACTORYFS_DIR=$1
+	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
+	func_install_from_list $_FACTORYFS_DIR sed/type2
+}
+func_install_su_type3()
+{
+	_FACTORYFS_DIR=$1
+	sudo rm $_FACTORYFS_DIR/bin/fsslcmnd
+	func_install_from_list $_FACTORYFS_DIR sed/type3
+}
+
+func_install_su_type5()
+{
+	_FACTORYFS_DIR=$1
+	### install rooting binaries
+	echo ">>>>> su package insall..."
+	func_install_from_list $_FACTORYFS_DIR sed/type5
+}
+
+func_install_su_type5-rara7886()
+{
+	_FACTORYFS_DIR=$1
+	_TMP_DIR=$2
+	apk_fix=$_TMP_DIR/apkfix
+	apktool_patch=$PWD/sed/type5-rara7886/apktool
+	
+	BOOT=:core.jar:core-junit.jar:bouncycastle.jar:ext.jar:framework.jar:framework2.jar:telephony-common.jar:voip-common.jar:mms-common.jar:android.policy.jar:services.jar:apache-xml.jar:sec_edm.jar:seccamera.jar:scrollpause.jar:stayrotation.jar:smartfaceservice.jar:secocsp.jar:sc.jar:commonimsinterface.jar
+
+	### install rooting binaries
+	func_install_from_list $_FACTORYFS_DIR sed/type5-rara7886
+
+	###SecSetting Patch###
+	sudo mkdir $apk_fix
+	sudo java -jar $apktool/baksmali-2.0.3.jar -c $BOOT -d $_FACTORYFS_DIR/framework -x $_FACTORYFS_DIR/app/SecSettings.odex -o $apk_fix/SecSettings
+	sudo patch -d $apk_fix/SecSettings/com/android/settings/deviceinfo/ < $apktool_patch/Status.smali.patch
+	sudo java -jar $apktool/smali-2.0.3.jar $apk_fix/SecSettings -o $apk_fix/classes.dex
+	sudo 7z a -mx=0 -tzip $_FACTORYFS_DIR/app/SecSettings.apk $apk_fix/classes.dex
+	sudo rm $_FACTORYFS_DIR/app/SecSettings.odex
+	sudo rm $apk_fix/classes.dex
+	sudo rm -rf $apk_fix
+
+	###break apk file###
+	sudo 7z d -mx=9 -tzip $_FACTORYFS_DIR/app/SysScope.apk AndroidManifest.xml
+
+}
+
+
+func_install_su_type6()
+{
+	_FACTORYFS_DIR=$1
+	_ANDROID_VER=`grep "ro.build.version.release" $1/build.prop | cut -d'=' -f2`
+
+	case "$_ANDROID_VER" in
+	  "4.2.2" ) func_install_su_type3 $_FACTORYFS_DIR ;;
+	  * ) func_install_su_type5 $_FACTORYFS_DIR ;;
+	esac
+
+
+}
+

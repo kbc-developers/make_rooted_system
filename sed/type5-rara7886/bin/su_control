@@ -32,7 +32,7 @@ get_uid()
 
 runcommand()
 {
-	if [ `get_uid` eq 0 ] ; then
+	if [ `get_uid` eq 0 ] then;
 		$1
 	else
 		/system/etc/su_client -c "$1"
@@ -129,14 +129,12 @@ replace_su_binary()
 }
 #------------------------------------------
 
-_su_enable()
+su_enable()
 {
 #	kill_daemonsu
 
 	if [ ! -f /system/xbin/busybox ] ;then
-		cp /system/etc/install-busybox.sh /data/local/tmp/install-busybox.sh
-		chmod 755 /data/local/tmp/install-busybox.sh
-		/data/local/tmp/install-busybox.sh
+		/system/etc/install-busybox.sh
 	fi
 
 	system_mount rw
@@ -146,7 +144,7 @@ _su_enable()
 	runcommand "/system/xbin/daemonsu --auto-daemon &"
 }
 
-_su_disable()
+su_disable()
 {
 	kill_daemonsu
 
@@ -158,7 +156,7 @@ _su_disable()
 	fi
 }
 
-_su_update()
+su_update()
 {
 #	kill_daemonsu
 	get_install_apk
@@ -168,21 +166,21 @@ _su_update()
 	cleanup 0
 }
 #------------------------------------------
-_su_contronl_help()
+su_contronl_help()
 {
 	echo "error: not found command"
 	echo "su_control enable|disable|update|su_daemonkill"
 	exit 2
 }
 
-_su_contronl()
+su_contronl()
 {
 	case "$1" in
-	  "enable" ) _su_enable ;;
-	  "disable" ) _su_disable ;;
-	  "update" ) _su_update ;;
+	  "enable" ) su_enable ;;
+	  "disable" ) su_disable ;;
+	  "update" ) su_update ;;
 	  "daemonkill" ) kill_daemonsu ;;
-	  * ) _su_contronl_help ;;
+	  * ) su_contronl_help ;;
 	esac
 }
 
@@ -190,12 +188,12 @@ _su_contronl()
 #echo arg1:$1
 path=$0
 case "${path##*/}" in
-  "su_enable" ) _su_enable ;;
-  "su_disable" ) _su_disable ;;
-  "su_update" ) _su_update ;;
-  "su_control" ) _su_contronl $1 ;;
+  "su_enable" ) su_enable ;;
+  "su_disable" ) su_disable ;;
+  "su_update" ) su_update ;;
+  "su_control" ) su_control $1 ;;
   "su_daemonkill" ) kill_daemonsu ;;
-  * ) _su_contronl_help ;;
+  * ) su_contronl_help ;;
 esac
 
 

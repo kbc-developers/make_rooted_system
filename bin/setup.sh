@@ -1,4 +1,4 @@
-# Copyright 2011-2014 sakuramilk,ma34s
+# Copyright 2011-2014 sakuramilk ma34s homuhomu rara7886
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -11,18 +11,21 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+# -------------------------------------------------------
+#!/bin/bash
 
-# config
-DEVICE_NAME="Note3(DCM)"
-FACTORYFS_IMG=system.img.ext4
-#FACTORYFS_IMG_SIZE=2097152000
-#FACTORYFS_IMG_SIZE=2888368128
-FACTORYFS_IMG_SIZE=2480340992
+#for ubuntu
+if [ -z `cat /etc/issue | grep Ubuntu` ]
 
-OPT_FILES=cache.img.ext4
+	if [ -z `dpkg -l | grep zlib1g-dev` ]
+		 apt-get install zlib1g-dev
+	fi
 
-SU_INSTALL_FUNC="
-func_install_su_type5
-func_install_su_type5-rara7886
-"
-
+	if [ -z `dpkg -l | grep p7zip-full` ]
+		 apt-get install p7zip-full
+	fi
+	if [ -z `java -version` ]
+		 apt-get install openjdk-6-jre
+	fi
+	exit 0
+fi

@@ -8,7 +8,7 @@
 # Nothing will happen on 4.2.x or older, unless SELinux+Enforcing.
 # If you want to force loading the daemon, use "--daemon" instead
 
-# /system/xbin/daemonsu --auto-daemon &
+/system/xbin/daemonsu --auto-daemon &
 
 # Some apps like to run stuff from this script as well, that will 
 # obviously break root - in your code, just search this file

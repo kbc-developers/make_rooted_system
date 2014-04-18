@@ -1,0 +1,21 @@
+#	list of install files 
+# srcfile					dst							owner	permission
+etc/busybox_file			etc/busybox_file			0.0		755
+bin/mount					bin/mount					0.2000	755
+#for virifi 's method
+bin/su_server				bin/kiesexe					0.2000	755
+etc/su_client				etc/su_client				0.2000	755
+#for supersu control
+bin/su_control				bin/su_control				0.0		755
+bin/su_control				bin/su_enable				0.0		755
+bin/su_control				bin/su_disable				0.0		755
+bin/su_control				bin/su_update				0.0		755
+bin/su_control				bin/su_daemonkill			0.2000	755
+#supersu
+addon.d/99-supersu.sh		addon.d/99-supersu.sh		0.0		755
+bin/.ext/.su				bin/.ext/.su				0.0		755
+etc/init.d/99SuperSUDaemon	etc/init.d/99SuperSUDaemon	0.0		755
+etc/.installed_su_daemon	etc/.installed_su_daemon	0.0		644
+etc/install-recovery.sh		etc/install-recovery.sh		0.0		755
+etc/install-busybox.sh		etc/install-busybox.sh		0.0		755
+xbin/daemonsu				xbin/daemonsu				0.0		755

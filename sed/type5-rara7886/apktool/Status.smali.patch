@@ -1,0 +1,19 @@
+*** ./Status.smali	2014-02-16 18:04:58.314894000 +0900
+--- ./Status.smali.mod	2014-02-16 18:41:49.586979061 +0900
+***************
+*** 651,657 ****
+      .prologue
+      const-wide/16 v3, 0x3e8
+  
+!     const v6, 0x7f090171
+  
+      const/4 v5, -0x1
+  
+--- 651,657 ----
+      .prologue
+      const-wide/16 v3, 0x3e8
+  
+!     const v6, 0x7f090170
+  
+      const/4 v5, -0x1
+  

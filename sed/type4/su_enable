@@ -1,8 +1,0 @@
-#!/system/bin/sh
-
-/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,rw /system"
-/system/etc/su_client -c "/system/etc/busybox_file cp /system/xbin/daemonsu /system/xbin/su"
-/system/etc/su_client -c "chown 0.0 /system/xbin/su"
-/system/etc/su_client -c "chmod 755 /system/xbin/su"
-/system/etc/su_client -c "/system/xbin/daemonsu --auto-daemon &"
-/system/etc/su_client -c "/system/etc/busybox_file mount -o remount,ro /system"

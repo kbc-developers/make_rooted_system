@@ -248,7 +248,6 @@ BUILD_SELECT=`func_make_build_select $_BUILD_SEL`
 SU_INSTALL_FUNCTION=`func_select_method $SU_INSTALL_FUNC`
 
 echo $SU_INSTALL_FUNCTION select!
-exit 1
 
 echo "===== $MODEL-$BUILD_SELECT SYSTEM make start ====="
 # init out/work dir

@@ -1,0 +1,201 @@
+#!/system/bin/sh
+# Copyright 2011-2014 ma34s homuhomu
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+#su_control_version=27
+public_version=0.2.7
+
+tmp_dir=/data/local/tmp/su_update_tmp
+tmp_apk=supersu.apk
+
+apk_su=assets/supersu.arm.png
+curr_su_deamon=/system/xbin/daemonsu
+curr_su=/system/xbin/su
+
+bb="/system/etc/busybox_file"
+
+get_uid()
+{
+	$bb id | $bb grep -o -e uid=[0-9]* | $bb cut -d '=' -f2
+}
+
+runcommand()
+{
+	if [ `get_uid` eq 0 ] ; then
+		$1
+	else
+		/system/etc/su_client -c "$1"
+	fi
+}
+
+system_mount()
+{
+	_type=$1
+	stat=`mount |grep /system | grep $1`
+	if [ -z $stat ] ;then
+		runcommand "$bb mount -o remount,$1 /system"
+	fi
+}
+
+kill_daemonsu()
+{
+	daemonsu_id=`ps | grep daemonsu | $bb awk '{ print $2}'`
+
+	for id in $daemonsu_id; do
+		runcommand "kill -9 $id"
+	done
+}
+
+#------------------------------------------
+cleanup()
+{
+	runcommand "$bb rm -rf $tmp_dir"
+	exit $1
+}
+
+get_install_apk()
+{
+	apk_path=`pm path eu.chainfire.supersu | cut -c9-`
+	if [ -d "$tmp_dir" ] ; then
+		runcommand "$bb rm -rf $tmp_dir"
+	fi
+
+	if [ ! -z "$apk_path" ] ;then
+	
+		runcommand "$bb mkdir -p $tmp_dir"
+		runcommand "$bb chmod 755 $tmp_dir"
+	
+		runcommand "$bb cp $apk_path $tmp_dir/$tmp_apk"
+		runcommand "chmod 666 $tmp_dir/$tmp_apk"
+		if [ -f "$tmp_dir/$tmp_apk" ] ;then
+			echo $apk_path detect
+		else
+			echo supersu not installed
+			cleanup 1
+		fi
+	else
+		echo supersu not installed
+		cleanup 2
+	fi
+}
+
+get_apk_su()
+{
+	runcommand "$bb unzip -q $tmp_dir/$tmp_apk -d $tmp_dir"
+	runcommand "$bb chmod 755 $tmp_dir/$apk_su"
+	runcommand "$bb chown 0.0 $tmp_dir/$apk_su"
+	if [ -f "$tmp_dir/$apk_su" ] ;then
+		echo new su binary extracted
+	else
+		echo extract error new su binary!!
+		cleanup 3
+	fi
+}
+
+check_update()
+{
+	tmp_ver=`$tmp_dir/$apk_su -V`
+	cur_ver=`$curr_su_deamon -V`
+	echo tmp_ver: $tmp_ver
+	echo cur_ver: $cur_ver
+	if [ $tmp_ver -gt $cur_ver ] ;then
+		echo DETECT UPDATE SuperSU!!!
+	else
+		cleanup 4
+	fi
+}
+
+replace_su_binary()
+{
+	system_mount rw
+	runcommand "$bb cp -av $tmp_dir/$apk_su $curr_su_deamon"
+	runcommand "$bb cp -av $tmp_dir/$apk_su $curr_su"
+	runcommand "$bb cp -av $tmp_dir/$apk_su /system/bin/.ext/.su"
+
+	sync;sync;sync
+	system_mount ro
+	echo new su binary installed and reboot now!!!
+}
+#------------------------------------------
+
+_su_enable()
+{
+#	kill_daemonsu
+
+	if [ ! -f /system/xbin/busybox ] ;then
+		cp /system/etc/install-busybox.sh /data/local/tmp/install-busybox.sh
+		chmod 755 /data/local/tmp/install-busybox.sh
+		/data/local/tmp/install-busybox.sh
+	fi
+
+	system_mount rw
+	runcommand "chown 0.0 /system/xbin/su"
+	runcommand "chmod 755 /system/xbin/su"
+	system_mount ro
+	runcommand "/system/xbin/daemonsu --auto-daemon &"
+}
+
+_su_disable()
+{
+	kill_daemonsu
+
+	if [ -f /system/xbin/su ]
+	then
+	system_mount rw
+	runcommand "$bb rm /system/xbin/su"
+	system_mount ro
+	fi
+}
+
+_su_update()
+{
+#	kill_daemonsu
+	get_install_apk
+	get_apk_su
+	check_update
+	replace_su_binary
+	cleanup 0
+}
+#------------------------------------------
+_su_contronl_help()
+{
+	echo "error: not found command"
+	echo "su_control enable|disable|update|su_daemonkill"
+	exit 2
+}
+
+_su_contronl()
+{
+	case "$1" in
+	  "enable" ) _su_enable ;;
+	  "disable" ) _su_disable ;;
+	  "update" ) _su_update ;;
+	  "daemonkill" ) kill_daemonsu ;;
+	  * ) _su_contronl_help ;;
+	esac
+}
+
+#echo arg0:$0
+#echo arg1:$1
+path=$0
+case "${path##*/}" in
+  "su_enable" ) _su_enable ;;
+  "su_disable" ) _su_disable ;;
+  "su_update" ) _su_update ;;
+  "su_control" ) _su_contronl $1 ;;
+  "su_daemonkill" ) kill_daemonsu ;;
+  * ) _su_contronl_help ;;
+esac
+
+

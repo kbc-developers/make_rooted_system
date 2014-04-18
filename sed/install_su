@@ -109,6 +109,18 @@ func_install_su_type6()
 	  * ) func_install_su_type5 $_FACTORYFS_DIR ;;
 	esac
 
+}
+
+func_install_su_type6_exynos()
+{
+	_FACTORYFS_DIR=$1
+	_ANDROID_VER=`grep "ro.build.version.release" $1/build.prop | cut -d'=' -f2`
+
+	case "$_ANDROID_VER" in
+	  "4.2.2" ) func_install_su_type2 $_FACTORYFS_DIR ;;
+	  * ) func_install_from_list $_FACTORYFS_DIR sed/type5_exynos ;;
+	esac
 
 }
+
 

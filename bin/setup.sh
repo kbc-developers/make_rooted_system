@@ -15,16 +15,16 @@
 #!/bin/bash
 
 #for ubuntu
-if [ -z `cat /etc/issue | grep Ubuntu` ]
+if [ ! -z "`cat /etc/issue | grep Ubuntu`" ] ;then
 
-	if [ -z `dpkg -l | grep zlib1g-dev` ]
+	if [ ! -z "`dpkg -l | grep zlib1g-dev`" ] ;then
 		 apt-get install zlib1g-dev
 	fi
 
-	if [ -z `dpkg -l | grep p7zip-full` ]
+	if [ ! -z "`dpkg -l | grep p7zip-full`" ] ;then
 		 apt-get install p7zip-full
 	fi
-	if [ -z `java -version` ]
+	if [ ! -z "`java -version`" ] ;then
 		 apt-get install openjdk-6-jre
 	fi
 	exit 0

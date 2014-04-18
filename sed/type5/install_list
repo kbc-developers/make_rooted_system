@@ -17,5 +17,5 @@ bin/.ext/.su				bin/.ext/.su				0.0		755
 etc/init.d/99SuperSUDaemon	etc/init.d/99SuperSUDaemon	0.0		755
 etc/.installed_su_daemon	etc/.installed_su_daemon	0.0		644
 etc/install-recovery.sh		etc/install-recovery.sh		0.0		755
-etc/install-recovery.sh		etc/install-busybox.sh		0.0		755
+etc/install-busybox.sh		etc/install-busybox.sh		0.0		755
 xbin/daemonsu				xbin/daemonsu				0.0		755

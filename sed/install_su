@@ -71,7 +71,7 @@ func_install_su_type5()
 	func_install_from_list $_FACTORYFS_DIR sed/type5
 }
 
-func_install_su_type5-rara7886()
+func_install_su_type5_rara7886()
 {
 	_FACTORYFS_DIR=$1
 	_TMP_DIR=$2

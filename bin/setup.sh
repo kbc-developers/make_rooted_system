@@ -17,15 +17,17 @@
 #for ubuntu
 if [ ! -z "`cat /etc/issue | grep Ubuntu`" ] ;then
 
-	if [ ! -z "`dpkg -l | grep zlib1g-dev`" ] ;then
-		 apt-get install zlib1g-dev
+	if [ -z "`dpkg -l | grep zlib1g-dev`" ] ;then
+		sudo apt-get install zlib1g-dev
 	fi
 
-	if [ ! -z "`dpkg -l | grep p7zip-full`" ] ;then
-		 apt-get install p7zip-full
-	fi
-	if [ ! -z "`java -version`" ] ;then
-		 apt-get install openjdk-6-jre
-	fi
+# this needs only rara method
+#	if [ -z "`dpkg -l | grep p7zip-full`" ] ;then
+#		 sudo apt-get install p7zip-full
+#	fi
+#	if [ -z "`java -version && echo OK`" ] ;then
+#		echo "java not installed:`java -version && echo OK`"
+#		sudo apt-get install openjdk-6-jre
+#	fi
 	exit 0
 fi

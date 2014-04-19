@@ -67,7 +67,6 @@
 　　2.Felica利用するためには、SystemStatusがOfficialである必要があり
 　　　現状、起動時Scanを回避するために、毎起動後に手動でrooted化が必要になります
 　　　　->起動時にroot権限を必要とするアプリが使えません
-
 　　　　※Terminal/adbより su_enable と打つ必要があります
 　　　　※GNT3eXT起動にて対応可能です(起動時一定時間後の自動enableにも対応）
 
@@ -94,8 +93,16 @@
 　
 　　　　suバイナリ更新後は再起動が必要になります。
 
+
   7. 更新履歴
    Mod by ma43s,homuhomu
+  v3.2.2
+    SC02E/SC03E ND2
+  v3.2.1
+    SC02E/SC03E ND2
+  v3.2.0
+    SC02E/SC03E ND2
+
   v3.1.1(=v3.1r1)
     SuperSu proインストール環境に対応
 

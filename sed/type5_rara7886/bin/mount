@@ -1,6 +1,6 @@
 #!/system/bin/sh
 
-if [ $1 = "-o" ]
+if [ "$1" = "-o" ]
 then
 /system/etc/busybox_file mount $@ 
 else

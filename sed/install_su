@@ -71,14 +71,6 @@ func_install_su_type5()
 	func_install_from_list $_FACTORYFS_DIR sed/type5
 }
 
-func_install_su_type6()
-{
-	_FACTORYFS_DIR=$1
-	### install rooting binaries
-	echo ">>>>> su package insall..."
-	func_install_from_list $_FACTORYFS_DIR sed/type6
-}
-
 func_install_su_type5_rara7886()
 {
 	_FACTORYFS_DIR=$1
@@ -131,4 +123,11 @@ func_install_su_type6_exynos()
 
 }
 
+func_install_su_type7()
+{
+	_FACTORYFS_DIR=$1
+	### install rooting binaries
+	echo ">>>>> su package insall..."
+	func_install_from_list $_FACTORYFS_DIR sed/type7
+}
 
